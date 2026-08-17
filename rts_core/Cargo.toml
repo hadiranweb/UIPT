@@ -1,0 +1,15 @@
+[package]
+name = "rts_core"
+version = "0.3.0"
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+criterion = "0.5"
+
+[[bench]]
+name = "bench_core"
+harness = false

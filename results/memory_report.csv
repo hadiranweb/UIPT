@@ -1,0 +1,4 @@
+struct_name,size_bytes,alignment_bytes,target_bytes,pass
+NodeMinimal,12,4,16,true
+NodePractical,24,4,32,true
+Edge,12,4,16,true
