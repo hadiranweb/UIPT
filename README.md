@@ -1,43 +1,49 @@
-# ONSOUR Unified Ecosystem (`onsour-unified`)
+# اکوسیستم یکپارچه ONSOUR (`onsour-unified`)
 
-## Overview
-This repository is the result of a **strategic merge** between the ONSOUR Level 1 Infrastructure and the UIPT Tanh-Brain Runtime. It combines high-level architectural "Pitch" vision with production-grade Rust engineering.
+## ۱. نمای کلی
+مونو‌ریپوی **ONSOUR Unified** زیرساخت بنیادین (Level 1) برای توسعه‌ی سیستم‌های هوشمند، بلادرنگ و واکنش‌گر است. این پروژه با ادغام نظریه‌ی **انتقال فاز تعاملی یکپارچه (UIPT)** و ران‌تایم قدرتمند **Tanh-Brain**، پلی میان پژوهش‌های علمی در پایتون و اجرای عملیاتی با کارایی بالا در Rust برقرار کرده است.
 
-The ONSOUR Unified Monorepo integrates all theoretical models, high-performance backends, user-facing applications, and specialized MCP services into a single, cohesive codebase. Grounded in the **Unified Interactive Phase Transition (UIPT)** and **Tanh-Brain** architectures, this repository bridges scientific research with production-grade runtime execution.
+---
 
-## Monorepo Structure
+## ۲. مستندات فنی و راهنماها
+برای شروع کار با زیرساخت و درک عمیق معماری، مستندات زیر را مطالعه کنید:
+- [📖 راهنمای توسعه‌دهندگان (Developer Guide)](./docs/DEVELOPER_GUIDE.md): راهنمای راه‌اندازی محیط، گردش کار و دستورات ساخت.
+- [🏗️ مستند معماری (Architecture)](./docs/ARCHITECTURE.md): تحلیل عمیق مدل Tanh-Brain و معماری جزیره‌ای (Island Architecture).
+- [📚 مرجع APIها (API Reference)](./docs/API_REFERENCE.md): مستندات توابع هسته Rust و لایه ارتباطی TypeScript.
+- [🔗 استراتژی لایه ارتباطی (Glue Code)](./docs/GLUE_CODE_STRATEGY.md): نحوه اتصال بخش‌های مختلف سیستم.
+
+---
+
+## ۳. ساختار مونو‌ریپو
 ```text
 onsour-unified/
-├── theory/               # Tanh-Brain, Financial-Computation, Noqte (Python/Docs)
-├── backend/              # Rust Workspace & Services
-│   ├── core/             # rts_core (Langevin / Ising Runtime v0.4)
-│   ├── platform/         # Pema platform components & synaptic hub
-│   └── mcp/              # casio-plus (AI Tool Integration)
-├── frontend/             # Next.js / Remix Applications
-│   ├── apps/
-│   │   ├── portal/       # Onsur Main Application
-│   │   └── genflow/      # GenFlow Workflow Platform
-│   └── packages/         # Shared UI & Domain Contracts
-├── agents/               # Telegram bots & automation workers
-├── docs/                 # OmniArch, Runtime Reports, Glue Code Strategy, Pitch Slides
-└── infra/                # Deployment and container configurations
+├── theory/               # مدل‌های ریاضی، مرجع پایتون و مقالات
+├── backend/              # فضای کاری Rust (هسته ران‌تایم و سرویس‌ها)
+├── frontend/             # اپلیکیشن‌های وب (Next.js / Remix) و پکیج‌ها
+├── agents/               # عامل‌های هوشمند و ربات‌های خودکارسازی
+├── docs/                 # مستندات فنی، گزارش‌ها و فایل‌های ارائه
+├── foundation.yaml       # مانیفست مرکزی ثبت ماژول‌ها و جزایر
+└── Makefile              # سیستم ساخت و تست یکپارچه
 ```
 
-## Core Engines & Specifications
-- **Runtime SPEC:** v0.4 (`backend/core/rts_core`)
-- **Mathematical Core:** $\theta = \tanh((E - E_c)/E_c)$
-- **Cross-Language Glue:** See [GLUE_CODE_STRATEGY.md](./docs/GLUE_CODE_STRATEGY.md)
+---
 
-## Getting Started
-### Running Backend Core Tests
+## ۴. شروع سریع (Quick Start)
+برای راه‌اندازی زیرساخت و اجرای تست‌ها:
 ```bash
-cd backend/core/rts_core
-cargo test
-cargo bench
+# راه‌اندازی محیط و نصب وابستگی‌ها
+make setup
+
+# کامپایل هسته ریاضی به WASM
+make build-core
+
+# اجرای تست‌های یکپارچه
+make test
 ```
 
-### Running Python Reference Validation
-```bash
-cd theory/python_reference
-python3 generate_test_vectors.py
-```
+---
+
+## ۵. وضعیت ران‌تایم (SPEC v0.4)
+- **تاخیر (Latency)**: ~۱۷ نانوثانیه به ازای هر نود.
+- **حافظه (Memory)**: ۲۴ بایت برای هر نود کاربردی.
+- **هم‌ارزی عددی**: خطای کمتر از $10^{-5}$ نسبت به مرجع پایتون.
