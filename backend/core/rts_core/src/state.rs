@@ -1,6 +1,7 @@
 use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
 
+/// Minimal node structure (16 bytes aligned)
 #[wasm_bindgen]
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
@@ -8,8 +9,12 @@ pub struct Node {
     pub theta: f32,
     pub e: f32,
     pub ec: f32,
+    pub _padding: u32, // Pad to 16 bytes for perfect cache alignment
 }
 
+/// Practical node structure (32 bytes aligned)
+/// ARCHITECTURAL NOTE: 32 bytes is a divisor of 64 (standard cache line size).
+/// This ensures zero cache-line straddling in contiguous arrays.
 #[wasm_bindgen]
 #[repr(C)]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
@@ -20,6 +25,8 @@ pub struct NodePractical {
     pub ec: f32,
     pub alpha: f32,
     pub flags: u32,
+    pub reserved1: u32, // Padding to reach 32 bytes
+    pub reserved2: u32, // Padding to reach 32 bytes
 }
 
 #[wasm_bindgen]
@@ -29,9 +36,11 @@ pub struct Edge {
     pub src: u32,
     pub dst: u32,
     pub weight: f32,
+    pub _padding: u32, // Pad to 16 bytes
 }
 
 #[wasm_bindgen]
+#[repr(C)]
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct StochasticState {
     pub x: f64,

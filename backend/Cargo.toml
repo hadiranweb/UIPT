@@ -1,9 +1,6 @@
 [workspace]
 members = [
     "core/rts_core",
-    "platform/*",
-    "services/*",
-    "mcp/*",
 ]
 resolver = "2"
 

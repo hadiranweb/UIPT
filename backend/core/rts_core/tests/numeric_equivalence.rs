@@ -1,4 +1,4 @@
-use rts_core::{Node, Edge, step_sparse, alpha};
+use rts_core::{Node, Edge, step_sparse_impl as step_sparse, alpha};
 use serde::Deserialize;
 use std::fs;
 
@@ -34,7 +34,7 @@ struct TrajectoryStep {
 
 #[test]
 fn test_numeric_equivalence_v04() {
-    let content = fs::read_to_string("../python_reference/test_vectors.json")
+    let content = fs::read_to_string("../../../theory/python_reference/test_vectors.json")
         .expect("Could not read test_vectors.json");
     let scenarios: Vec<TestScenario> = serde_json::from_str(&content).unwrap();
 
@@ -44,12 +44,14 @@ fn test_numeric_equivalence_v04() {
             theta: n.theta,
             e: n.e,
             ec: n.ec,
+            _padding: 0,
         }).collect();
         
         let edges: Vec<Edge> = scenario.edges.iter().map(|e| Edge {
             src: e.src,
             dst: e.dst,
             weight: e.weight,
+            _padding: 0,
         }).collect();
 
         let threshold = if scenario.name == "long_trajectory" { 1e-4 } else { 1e-5 };
@@ -62,7 +64,7 @@ fn test_numeric_equivalence_v04() {
                 let expected = &scenario.expected_trajectory[expected_idx];
                 for i in 0..nodes.len() {
                     let diff_theta = (nodes[i].theta - expected.thetas[i]).abs();
-                    let diff_alpha = (alpha(nodes[i].theta) - expected.alphas[i]).abs();
+                    let _diff_alpha = (alpha(nodes[i].theta) - expected.alphas[i]).abs();
                     
                     assert!(diff_theta <= threshold, 
                         "Scenario {} step {} node {}: theta diff {} > threshold {}", 
