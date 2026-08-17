@@ -1,0 +1,39 @@
+# ONSOUR Ecosystem: Foundation Manifest (Level 1)
+# This file serves as the master registry for all modules, islands, and services in the monorepo.
+
+ecosystem_version: "1.0.0-alpha"
+architecture: "UIPT Tanh-Brain Unified Foundation"
+
+core_engine:
+  name: "rts_core"
+  path: "backend/core/rts_core"
+  runtime: "Rust / WASM"
+  status: "Active"
+  version: "0.4.0"
+
+registered_islands:
+  - id: "portal-main"
+    name: "Onsur Main Portal"
+    path: "frontend/apps/portal"
+    type: "frontend"
+    framework: "Next.js / Remix"
+    dependencies: ["rts-core-wasm"]
+
+  - id: "genflow-engine"
+    name: "GenFlow Workflow Platform"
+    path: "frontend/apps/genflow"
+    type: "frontend"
+    framework: "TypeScript"
+    dependencies: []
+
+  - id: "casio-mcp"
+    name: "Casio Plus MCP Server"
+    path: "backend/mcp/casio-plus"
+    type: "backend-service"
+    runtime: "Rust"
+    status: "Draft"
+
+shared_packages:
+  - name: "rts-core-wasm"
+    path: "frontend/packages/rts-core-wasm"
+    description: "Compiled WASM bindings for Tanh-Brain core math"

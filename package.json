@@ -1,0 +1,16 @@
+{
+  "name": "onsour-unified",
+  "version": "0.1.0",
+  "private": true,
+  "description": "ONSOUR Unified Ecosystem Monorepo - Foundation Level 1",
+  "scripts": {
+    "build:core": "cd backend/core/rts_core && wasm-pack build --target web --out-dir ../../../frontend/packages/rts-core-wasm",
+    "dev:portal": "pnpm --filter portal dev",
+    "test:all": "cargo test --manifest-path backend/Cargo.toml && pnpm test",
+    "infra:up": "docker-compose up -d"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "prettier": "^3.0.0"
+  }
+}

@@ -1,8 +1,0 @@
-id,name,threshold,value,status,notes
-C1_numeric_equivalence,Numeric Equivalence,< 1e-4,< 1e-5,PASS,Official long_trajectory passed.
-C2_latency_absolute_or_50x,Latency < 500ns or 50x Py,< 500ns,~80ns (scalar),PASS,
-C3_memory_practical_node,Memory Practical Node,<= 32B,24B,PASS,
-C4_binary_size,Binary Size < 1MB,< 1MB,< 100KB,PASS,STRONG_BINARY_SIZE
-C5_python_reference_resource_advantage,Py Ref Advantage > 20x,> 20x,> 50x,PASS,
-C6_low_level_baseline_comparison_reported,Low-level Baseline Reported,Yes,Yes,PASS,
-C7_benchmark_environment_reported,Env Reported,Yes,Yes,PASS,

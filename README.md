@@ -1,36 +1,41 @@
-# UIPT (Unified Interactive Phase Transition)
+# ONSOUR Unified Ecosystem (`onsour-unified`)
 
 ## Overview
-UIPT is a theoretical and computational framework for high-performance, autonomous agents governed by phase transition dynamics. This repository hosts the official implementation of the **UIPT-RUNTIME-SPEC**, providing a sub-microsecond Rust core for real-time applications.
+The ONSOUR Unified Monorepo integrates all theoretical models, high-performance backends, user-facing applications, and specialized MCP services into a single, cohesive codebase. Grounded in the **Unified Interactive Phase Transition (UIPT)** and **Tanh-Brain** architectures, this repository bridges scientific research with production-grade runtime execution.
 
-## Project Structure
-*   **`rts_core/`**: The high-performance Rust implementation of the UIPT mathematical core. Optimized for low-latency and minimal memory footprint.
-*   **`python_reference/`**: The "Frozen" reference implementation in Python used for scientific validation and numeric equivalence testing (Track C).
-*   **`evaluation/`**: Tools for benchmarking performance, measuring binary sizes, and verifying numeric accuracy.
-*   **`results/`**: Latest benchmark reports, memory layout analysis, and PASS/MISS tables.
-*   **`TANH_BRAIN_MATH_CORE.md`**: Structured summary of the Tanh-Brain mathematical architecture.
-*   **`UIPT-A.md`**: Theoretical framework and abstract for Unified Interactive Phase Transition.
+## Monorepo Structure
+```text
+onsour-unified/
+├── theory/               # Tanh-Brain, Financial-Computation, Noqte (Python/Docs)
+├── backend/              # Rust Workspace & Services
+│   ├── core/             # rts_core (Langevin / Ising Runtime v0.4)
+│   ├── platform/         # Pema platform components & synaptic hub
+│   └── mcp/              # casio-plus (AI Tool Integration)
+├── frontend/             # Next.js / Remix Applications
+│   ├── apps/
+│   │   ├── portal/       # Onsur Main Application
+│   │   └── genflow/      # GenFlow Workflow Platform
+│   └── packages/         # Shared UI & Domain Contracts
+├── agents/               # Telegram bots & automation workers
+├── docs/                 # OmniArch, Runtime Reports, Glue Code Strategy
+└── infra/                # Deployment and container configurations
+```
 
-## Key Specifications (v0.4)
-- **Core Equation:** $\theta = \tanh((E - E_c)/E_c)$
-- **Latency Target:** < 500 ns per node update.
-- **Memory Target:** $\le 32$ bytes per practical node.
-- **Numeric Equivalence:** Verified against Python reference with error $< 10^{-5}$.
+## Core Engines & Specifications
+- **Runtime SPEC:** v0.4 (`backend/core/rts_core`)
+- **Mathematical Core:** $\theta = \tanh((E - E_c)/E_c)$
+- **Cross-Language Glue:** See [GLUE_CODE_STRATEGY.md](./docs/GLUE_CODE_STRATEGY.md)
 
 ## Getting Started
-### Rust Runtime
+### Running Backend Core Tests
 ```bash
-cd rts_core
-cargo build --release
+cd backend/core/rts_core
 cargo test
 cargo bench
 ```
 
-### Python Reference
+### Running Python Reference Validation
 ```bash
-cd python_reference
+cd theory/python_reference
 python3 generate_test_vectors.py
 ```
-
-## Documentation
-For a deep dive into the math, see [TANH_BRAIN_MATH_CORE.md](./TANH_BRAIN_MATH_CORE.md). For the theoretical background, refer to [UIPT-A.md](./UIPT-A.md).
