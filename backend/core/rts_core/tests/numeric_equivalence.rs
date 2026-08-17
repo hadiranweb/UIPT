@@ -1,4 +1,4 @@
-use rts_core::{Node, Edge, step_sparse_impl as step_sparse, alpha};
+use rts_core::{Node, Edge, step_sparse, step_sparse_buffered, alpha};
 use serde::Deserialize;
 use std::fs;
 
@@ -75,4 +75,29 @@ fn test_numeric_equivalence_v04() {
         }
         println!("Scenario {} PASSED.", scenario.name);
     }
+}
+
+#[test]
+fn test_parallel_determinism() {
+    let n = 1000;
+    let current_nodes = vec![Node { theta: 0.1, e: 10.0, ec: 5.0, _padding: 0 }; n];
+    let mut edges = Vec::new();
+    for i in 0..n {
+        edges.push(Edge { src: i as u32, dst: ((i + 1) % n) as u32, weight: 0.5, _padding: 0 });
+        edges.push(Edge { src: i as u32, dst: ((i + 2) % n) as u32, weight: 0.2, _padding: 0 });
+    }
+
+    // Run 1
+    let mut next_1 = vec![Node::default(); n];
+    step_sparse_buffered(&current_nodes, &mut next_1, &edges);
+
+    // Run 2
+    let mut next_2 = vec![Node::default(); n];
+    step_sparse_buffered(&current_nodes, &mut next_2, &edges);
+
+    for i in 0..n {
+        assert_eq!(next_1[i].theta.to_bits(), next_2[i].theta.to_bits(), 
+            "Non-deterministic result at node {}! Bit-exact match failed.", i);
+    }
+    println!("Parallel determinism verified.");
 }

@@ -389,6 +389,7 @@ name = "rts_core"
 version = "0.3.0"
 dependencies = [
  "criterion",
+ "rayon",
  "serde",
  "serde-wasm-bindgen",
  "serde_json",

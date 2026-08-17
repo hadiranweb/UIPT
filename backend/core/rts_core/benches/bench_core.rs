@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion, BenchmarkId, black_box};
-use rts_core::{Node, Edge, step_sparse_impl as step_sparse, step_node};
+use rts_core::{Node, Edge, step_sparse, step_node};
 use std::time::Duration;
 
 fn bench_rts_core_v04(c: &mut Criterion) {
