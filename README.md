@@ -1,6 +1,8 @@
 # ONSOUR Unified Ecosystem (`onsour-unified`)
 
 ## Overview
+This repository is the result of a **strategic merge** between the ONSOUR Level 1 Infrastructure and the UIPT Tanh-Brain Runtime. It combines high-level architectural "Pitch" vision with production-grade Rust engineering.
+
 The ONSOUR Unified Monorepo integrates all theoretical models, high-performance backends, user-facing applications, and specialized MCP services into a single, cohesive codebase. Grounded in the **Unified Interactive Phase Transition (UIPT)** and **Tanh-Brain** architectures, this repository bridges scientific research with production-grade runtime execution.
 
 ## Monorepo Structure
@@ -17,7 +19,7 @@ onsour-unified/
 │   │   └── genflow/      # GenFlow Workflow Platform
 │   └── packages/         # Shared UI & Domain Contracts
 ├── agents/               # Telegram bots & automation workers
-├── docs/                 # OmniArch, Runtime Reports, Glue Code Strategy
+├── docs/                 # OmniArch, Runtime Reports, Glue Code Strategy, Pitch Slides
 └── infra/                # Deployment and container configurations
 ```
 
