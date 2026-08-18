@@ -8,3 +8,4 @@ rts_core = { path = "../core/rts_core" }
 rayon = { workspace = true }
 serde = { workspace = true }
 wasm-bindgen = { workspace = true }
+sha2 = "0.10"

@@ -1,5 +1,5 @@
 use wasm_bindgen::prelude::*;
-use rts_core::{Node, Edge, step_sparse_buffered};
+use rts_core::{Node, Edge, step_sparse_buffered, Fixed64};
 use serde::{Serialize, Deserialize};
 
 #[wasm_bindgen]
@@ -10,16 +10,16 @@ pub fn init_panic_hook() {
 
 #[derive(Serialize, Deserialize)]
 pub struct WasmNode {
-    pub theta: f32,
-    pub e: f32,
-    pub ec: f32,
+    pub theta: Fixed64,
+    pub e: Fixed64,
+    pub ec: Fixed64,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct WasmEdge {
     pub src: u32,
     pub dst: u32,
-    pub weight: f32,
+    pub weight: Fixed64,
 }
 
 #[wasm_bindgen]
@@ -29,7 +29,7 @@ pub fn step_simulation(
 ) -> Result<JsValue, JsValue> {
     let current_wasm_nodes: Vec<WasmNode> = serde_wasm_bindgen::from_value(current_nodes_val)?;
     let wasm_edges: Vec<WasmEdge> = serde_wasm_bindgen::from_value(edges_val)?;
-
+    
     let current_nodes: Vec<Node> = current_wasm_nodes.into_iter().map(|n| Node {
         theta: n.theta,
         e: n.e,
@@ -45,8 +45,6 @@ pub fn step_simulation(
     }).collect();
 
     let mut next_nodes = vec![Node::default(); current_nodes.len()];
-    
-    // Execute core simulation logic
     step_sparse_buffered(&current_nodes, &mut next_nodes, &edges);
 
     let next_wasm_nodes: Vec<WasmNode> = next_nodes.into_iter().map(|n| WasmNode {
@@ -60,5 +58,5 @@ pub fn step_simulation(
 
 #[wasm_bindgen]
 pub fn get_version() -> String {
-    "ONSOUR-WASM-v0.3.0".to_string()
+    "ONSOUR-WASM-FIXED-v0.4.0".to_string()
 }
