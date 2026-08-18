@@ -29,8 +29,8 @@ test: check-correctness
 
 # Explicitly check for Correctness Invariants (Layout & Determinism)
 check-correctness:
-	@echo "Verifying Correctness Invariants (v1.2)..."
-	cd theory/python_reference && python3 generate_test_vectors.py
+	@echo "Verifying Correctness Invariants (v1.3)..."
+	cd theory/memory_layers/operational/python_reference && python3 generate_test_vectors.py
 	cargo test --manifest-path backend/Cargo.toml --test memory_layout --test numeric_equivalence -- --nocapture
 
 # Clean build artifacts

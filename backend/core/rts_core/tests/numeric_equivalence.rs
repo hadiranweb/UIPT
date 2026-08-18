@@ -34,7 +34,7 @@ struct TrajectoryStep {
 
 #[test]
 fn test_numeric_equivalence_v04() {
-    let content = fs::read_to_string("../../../theory/python_reference/test_vectors.json")
+    let content = fs::read_to_string("../../../theory/memory_layers/operational/python_reference/test_vectors.json")
         .expect("Could not read test_vectors.json");
     let scenarios: Vec<TestScenario> = serde_json::from_str(&content).unwrap();
 
