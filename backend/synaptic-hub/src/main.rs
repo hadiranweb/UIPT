@@ -1,7 +1,7 @@
 use island_runtime::module_api::OnsourModule;
 use commerce_reef::CommerceReef;
 use finance_lagoon::FinanceLagoon;
-use log::{info, warn, error};
+use log::info;
 use onsour_governance::{ThermodynamicGovernor, SystemMetrics};
 use std::time::Duration;
 
@@ -24,7 +24,7 @@ impl OmniArchFlow {
     fn new() -> Self {
         Self { 
             stage: TransactionStage::Gateway,
-            governor: ThermodynamicGovernor::new(0.1, 0.005, 0.25).expect("Invalid Governor Config"),
+            governor: ThermodynamicGovernor::new(0.1, 0.005, 0.25, 0.3).expect("Invalid Governor Config"),
             metrics: SystemMetrics::new(0.0, 0.0, 0.0),
         }
     }
@@ -40,14 +40,14 @@ impl OmniArchFlow {
         self.stage = TransactionStage::Regulatory;
         info!("[{:?}] Checking Ethical Determinism & Governance...", self.stage);
         
-        // Refresh metrics if needed
-        if self.metrics.needs_refresh() {
+        // Refresh metrics if older than 500ms
+        if self.metrics.is_stale(Duration::from_millis(500)) {
             // In production, read from /proc/stat or system APIs
             self.metrics = SystemMetrics::new(0.4, 0.3, 15.0); 
         }
         
-        let dynamic_epsilon = self.governor.compute_dynamic_epsilon(&self.metrics);
-        let snapshot = self.governor.create_snapshot(0, dynamic_epsilon, &self.metrics); // Epoch 0 for now
+        let dynamic_epsilon = self.governor.compute_dynamic_epsilon(&self.metrics, Duration::from_secs(10));
+        let snapshot = self.governor.create_snapshot(0, dynamic_epsilon); 
         info!("[{:?}] Governance Applied: Epsilon set to {:.6}", self.stage, dynamic_epsilon);
         info!("[{:?}] Snapshot Created: {:?}", self.stage, snapshot);
 
