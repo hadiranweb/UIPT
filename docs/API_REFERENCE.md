@@ -1,21 +1,21 @@
-# مرجع APIهای اکوسیستم ONSOUR
+# مرجع APIهای اکوسیستم ONSOUR (Foundation Level 1.2)
+
+این سند مرجع رسمی APIهای هسته ران‌تایم و لایه ارتباطی در نسخه ۱.۲ است که با تمرکز بر **صحت (Correctness-First)** طراحی شده است.
+
+---
 
 ## ۱. مرجع هسته Rust (`rts_core`)
 
-هسته اصلی ران‌تایم توابع زیر را برای محاسبات فاز و مدیریت نودها ارائه می‌دهد:
-
 ### الف) ساختارهای داده (`state.rs`)
-- `Node`: نود مینیمال با فیلدهای `theta`, `e`, `ec` (اندازه: ۱۲ بایت).
-- `NodePractical`: نود کاربردی شامل تاریخچه و پرچم‌ها (اندازه: ۲۴ بایت).
-- `Edge`: یال گراف تنک شامل `src`, `dst`, `weight` (اندازه: ۱۲ بایت).
+تمامی ساختارها از ویژگی `#[repr(C)]` برای پایداری ABI استفاده می‌کنند:
+- `Node`: نود مینیمال (اندازه: ۱۶ بایت، تراز: ۱۶ بایت، شامل پدینگ صریح).
+- `NodePractical`: نود کاربردی (اندازه: ۳۲ بایت، تراز: ۳۲ بایت، طراحی شده برای حذف کامل Cache-Line Straddling).
+- `Edge`: یال گراف تنک (اندازه: ۱۶ بایت).
 
-### ب) توابع ریاضی و گذار فاز (`math.rs`)
-- `step_node_math(theta_prev: f32, e: f32, ec: f32, neighbor_sum: f32) -> f32`: محاسبه مقدار جدید پارامتر نظم با استفاده از تابع `tanh`.
-- `alpha(theta: f32) -> f32`: محاسبه کانال تحریکی $\alpha = (\theta + 1) / 2$.
-
-### ج) مدیریت گراف (`graph.rs`)
-- `step_sparse_impl(nodes: &mut [Node], edges: &[Edge])`: اجرای گام زمانی روی گراف تنک در سمت Rust.
-- `step_sparse_js(nodes: JsValue, edges: JsValue) -> JsValue`: نسخه سازگار با WebAssembly برای تبادل مستقیم داده با جاوا اسکریپت/تایپ‌اسکریپت.
+### ب) مدیریت گراف و Double Buffering (`graph.rs`)
+- `step_sparse_buffered(current_nodes: &[Node], next_nodes: &mut [Node], edges: &[Edge])`: اجرای گام زمانی با مدل Double Buffering. تضمین می‌کند که `State(t)` در طول اپوک تغییر ناپذیر باقی بماند.
+- `step_sparse_impl(nodes: &mut [Node], edges: &[Edge])`: نسخه کپسوله‌شده برای سازگاری تک‌بافر.
+- `step_sparse_js(nodes: JsValue, edges: JsValue) -> JsValue`: تابع واسط WebAssembly با تبدیل خودکار Serde.
 
 ---
 

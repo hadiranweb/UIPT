@@ -1,4 +1,5 @@
-.PHONY: build-core build-frontend setup test
+.PHONY: build-core build-frontend setup test check-correctness clean
+# ONSOUR Unified Foundation Level 1.2 Makefile
 
 # Default target
 all: setup build-core build-frontend
@@ -21,10 +22,16 @@ build-frontend:
 	pnpm build
 
 # Run all tests (Rust & TS)
-test:
+test: check-correctness
 	@echo "Running Integrated Tests..."
 	cargo test --manifest-path backend/Cargo.toml
 	pnpm test
+
+# Explicitly check for Correctness Invariants (Layout & Determinism)
+check-correctness:
+	@echo "Verifying Correctness Invariants (v1.2)..."
+	cd theory/python_reference && python3 generate_test_vectors.py
+	cargo test --manifest-path backend/Cargo.toml --test memory_layout --test numeric_equivalence -- --nocapture
 
 # Clean build artifacts
 clean:
