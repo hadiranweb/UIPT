@@ -726,7 +726,9 @@ dependencies = [
 name = "synaptic_hub"
 version = "0.1.0"
 dependencies = [
+ "commerce_reef",
  "env_logger",
+ "finance_lagoon",
  "island_runtime",
  "log",
  "rts_core",
