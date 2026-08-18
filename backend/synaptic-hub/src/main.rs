@@ -24,8 +24,8 @@ impl OmniArchFlow {
     fn new() -> Self {
         Self { 
             stage: TransactionStage::Gateway,
-            governor: ThermodynamicGovernor::new(0.1, 0.005, 0.25),
-            metrics: SystemMetrics::new(0.2), // EMA alpha = 0.2
+            governor: ThermodynamicGovernor::new(0.1, 0.005, 0.25).expect("Invalid Governor Config"),
+            metrics: SystemMetrics::new(0.0, 0.0, 0.0),
         }
     }
 
@@ -40,8 +40,12 @@ impl OmniArchFlow {
         self.stage = TransactionStage::Regulatory;
         info!("[{:?}] Checking Ethical Determinism & Governance...", self.stage);
         
-        // Mocking metrics update (In production, this would read from /proc/stat or OS APIs)
-        self.metrics.update(0.4, 0.3, 15.0); 
+        // Refresh metrics if needed
+        if self.metrics.needs_refresh() {
+            // In production, read from /proc/stat or system APIs
+            self.metrics = SystemMetrics::new(0.4, 0.3, 15.0); 
+        }
+        
         let dynamic_epsilon = self.governor.compute_dynamic_epsilon(&self.metrics);
         info!("[{:?}] Governance Applied: Epsilon set to {:.6}", self.stage, dynamic_epsilon);
 
