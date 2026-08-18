@@ -1,0 +1,10 @@
+[package]
+name = "island_runtime"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rts_core = { path = "../core/rts_core" }
+rayon = { workspace = true }
+serde = { workspace = true }
+wasm-bindgen = { workspace = true }

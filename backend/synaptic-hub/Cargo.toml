@@ -1,0 +1,13 @@
+[package]
+name = "synaptic_hub"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+rts_core = { path = "../core/rts_core" }
+island_runtime = { path = "../runtime" }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = "1.0"
+env_logger = "0.10"
+log = "0.4"

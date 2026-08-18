@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "core/rts_core",
+    "runtime",
+    "synaptic-hub",
 ]
 resolver = "2"
 
