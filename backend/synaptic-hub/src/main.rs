@@ -47,7 +47,9 @@ impl OmniArchFlow {
         }
         
         let dynamic_epsilon = self.governor.compute_dynamic_epsilon(&self.metrics);
+        let snapshot = self.governor.create_snapshot(0, dynamic_epsilon, &self.metrics); // Epoch 0 for now
         info!("[{:?}] Governance Applied: Epsilon set to {:.6}", self.stage, dynamic_epsilon);
+        info!("[{:?}] Snapshot Created: {:?}", self.stage, snapshot);
 
         // 3. Logic
         self.stage = TransactionStage::Logic;

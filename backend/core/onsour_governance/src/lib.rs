@@ -2,6 +2,17 @@ use std::time::{Instant, Duration};
 use serde::{Serialize, Deserialize};
 use log::info;
 
+/// A snapshot of governance state for a specific epoch to ensure exact replayability.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GovernanceSnapshot {
+    pub epoch: u64,
+    pub epsilon: f32,
+    pub cpu_load: f32,
+    pub memory_pressure: f32,
+    pub network_latency_ms: f32,
+    pub timestamp: u64, // Unix timestamp or relative epoch time
+}
+
 /// SystemMetrics with timestamp and defensive clamping.
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct SystemMetrics {
@@ -107,6 +118,21 @@ impl ThermodynamicGovernor {
             self.smoothed_load_factor, self.smoothed_latency_factor, final_eps
         );
         (final_eps, debug_info)
+    }
+
+    /// Generates a snapshot for the current epoch.
+    pub fn create_snapshot(&self, epoch: u64, epsilon: f32, metrics: &SystemMetrics) -> GovernanceSnapshot {
+        GovernanceSnapshot {
+            epoch,
+            epsilon,
+            cpu_load: metrics.cpu_load,
+            memory_pressure: metrics.memory_pressure,
+            network_latency_ms: metrics.network_latency_ms,
+            timestamp: std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap_or_default()
+                .as_secs(),
+        }
     }
 }
 
