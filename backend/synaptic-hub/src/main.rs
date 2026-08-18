@@ -2,6 +2,8 @@ use island_runtime::module_api::OnsourModule;
 use commerce_reef::CommerceReef;
 use finance_lagoon::FinanceLagoon;
 use log::{info, warn, error};
+use onsour_governance::{ThermodynamicGovernor, SystemMetrics};
+use std::time::Duration;
 
 #[derive(Debug)]
 enum TransactionStage {
@@ -14,11 +16,17 @@ enum TransactionStage {
 
 struct OmniArchFlow {
     stage: TransactionStage,
+    governor: ThermodynamicGovernor,
+    metrics: SystemMetrics,
 }
 
 impl OmniArchFlow {
     fn new() -> Self {
-        Self { stage: TransactionStage::Gateway }
+        Self { 
+            stage: TransactionStage::Gateway,
+            governor: ThermodynamicGovernor::new(0.1, 0.005, 0.25),
+            metrics: SystemMetrics::new(0.2), // EMA alpha = 0.2
+        }
     }
 
     async fn process(&mut self, island: &mut dyn OnsourModule) {
@@ -31,6 +39,11 @@ impl OmniArchFlow {
         // 2. Regulatory
         self.stage = TransactionStage::Regulatory;
         info!("[{:?}] Checking Ethical Determinism & Governance...", self.stage);
+        
+        // Mocking metrics update (In production, this would read from /proc/stat or OS APIs)
+        self.metrics.update(0.4, 0.3, 15.0); 
+        let dynamic_epsilon = self.governor.compute_dynamic_epsilon(&self.metrics);
+        info!("[{:?}] Governance Applied: Epsilon set to {:.6}", self.stage, dynamic_epsilon);
 
         // 3. Logic
         self.stage = TransactionStage::Logic;

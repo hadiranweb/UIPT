@@ -6,6 +6,7 @@ members = [
     "synaptic-hub",
     "islands/commerce_reef",
     "islands/finance_lagoon",
+    "core/onsour_governance",
 ]
 resolver = "2"
 
