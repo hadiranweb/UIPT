@@ -1,0 +1,19 @@
+[package]
+name = "rts_wasm"
+version = "0.3.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2.127"
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.6.5"
+rts_core = { path = "../rts_core" }
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.42"
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = false

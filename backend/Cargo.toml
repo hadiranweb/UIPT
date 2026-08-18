@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "core/rts_core",
+    "core/rts_wasm",
     "runtime",
     "synaptic-hub",
 ]
