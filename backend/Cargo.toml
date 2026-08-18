@@ -4,6 +4,8 @@ members = [
     "core/rts_wasm",
     "runtime",
     "synaptic-hub",
+    "islands/commerce_reef",
+    "islands/finance_lagoon",
 ]
 resolver = "2"
 

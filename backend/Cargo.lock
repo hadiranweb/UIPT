@@ -133,6 +133,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c8d4a3bb8b1e0c1050499d1815f5ab16d04f0959b233085fb31653fbfc9d98f9"
 
 [[package]]
+name = "commerce_reef"
+version = "0.1.0"
+dependencies = [
+ "island_runtime",
+ "rts_core",
+ "serde",
+]
+
+[[package]]
 name = "criterion"
 version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -226,6 +235,15 @@ checksum = "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
 dependencies = [
  "libc",
  "windows-sys",
+]
+
+[[package]]
+name = "finance_lagoon"
+version = "0.1.0"
+dependencies = [
+ "island_runtime",
+ "rts_core",
+ "serde",
 ]
 
 [[package]]
