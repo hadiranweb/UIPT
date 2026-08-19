@@ -493,7 +493,9 @@ dependencies = [
  "log",
  "rand",
  "serde",
+ "serde-wasm-bindgen",
  "sha2",
+ "wasm-bindgen",
 ]
 
 [[package]]

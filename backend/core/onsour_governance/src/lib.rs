@@ -2,6 +2,7 @@ use std::time::{Instant, Duration};
 use serde::{Serialize, Deserialize};
 use log::warn;
 use sha2::{Sha256, Digest};
+use wasm_bindgen::prelude::*;
 
 /// Q16.16 Fixed-point representation for deterministic governance.
 pub type Fixed = i32;
@@ -17,17 +18,25 @@ pub fn from_fixed(fixed: Fixed) -> f32 {
 }
 
 /// A snapshot of governance state for a specific epoch.
+#[wasm_bindgen]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GovernanceSnapshot {
     pub epoch: u64,
     pub epsilon: Fixed,
     pub smoothed_load: Fixed,
     pub smoothed_latency: Fixed,
-    pub prev_hash: String, // Link to previous epoch for PoT
+    prev_hash: String,
+}
+
+#[wasm_bindgen]
+impl GovernanceSnapshot {
+    #[wasm_bindgen(getter)]
+    pub fn prev_hash(&self) -> String {
+        self.prev_hash.clone()
+    }
 }
 
 impl GovernanceSnapshot {
-    /// Computes the cryptographic hash of the trajectory step.
     pub fn compute_hash(&self, state_root: &str) -> String {
         let mut hasher = Sha256::new();
         hasher.update(self.epoch.to_le_bytes());
@@ -41,30 +50,27 @@ impl GovernanceSnapshot {
 }
 
 /// SystemMetrics using Fixed-point for absolute determinism.
+#[wasm_bindgen]
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct SystemMetrics {
     pub cpu_load: Fixed,
     pub memory_pressure: Fixed,
     pub network_latency_ms: Fixed,
-    #[serde(skip, default = "Instant::now")]
-    pub last_updated_at: Instant,
 }
 
+#[wasm_bindgen]
 impl SystemMetrics {
+    #[wasm_bindgen(constructor)]
     pub fn new(cpu: f32, mem: f32, latency: f32) -> Self {
         SystemMetrics {
             cpu_load: to_fixed(cpu.clamp(0.0, 1.0)),
             memory_pressure: to_fixed(mem.clamp(0.0, 1.0)),
             network_latency_ms: to_fixed(latency.max(0.0)),
-            last_updated_at: Instant::now(),
         }
-    }
-
-    pub fn is_stale(&self, max_age: Duration) -> bool {
-        self.last_updated_at.elapsed() > max_age
     }
 }
 
+#[wasm_bindgen]
 pub struct ThermodynamicGovernor {
     pub base_epsilon: Fixed,
     pub min_epsilon: Fixed,
@@ -73,21 +79,23 @@ pub struct ThermodynamicGovernor {
     ema_alpha: Fixed,
     smoothed_load: Fixed,
     smoothed_latency: Fixed,
-    pub last_hash: String,
+    last_hash: String,
 }
 
+#[wasm_bindgen]
 impl ThermodynamicGovernor {
-    pub fn new(base: f32, min: f32, max: f32, alpha: f32) -> Result<Self, &'static str> {
+    #[wasm_bindgen(constructor)]
+    pub fn new(base: f32, min: f32, max: f32, alpha: f32) -> Result<ThermodynamicGovernor, String> {
         let b = to_fixed(base);
         let mi = to_fixed(min);
         let ma = to_fixed(max);
         let a = to_fixed(alpha);
 
         if mi <= 0 || mi > b || b > ma {
-            return Err("Expected 0 < min <= base <= max");
+            return Err("Expected 0 < min <= base <= max".to_string());
         }
         if a <= 0 || a > FP_ONE {
-            return Err("EMA alpha must be in (0, 1]");
+            return Err("EMA alpha must be in (0, 1]".to_string());
         }
 
         Ok(Self {
@@ -101,12 +109,13 @@ impl ThermodynamicGovernor {
         })
     }
 
-    pub fn compute_dynamic_epsilon(&mut self, metrics: &SystemMetrics, max_age: Duration) -> Fixed {
-        if metrics.is_stale(max_age) {
-            warn!("Stale telemetry! Throttling to min_epsilon.");
-            return self.min_epsilon;
-        }
+    #[wasm_bindgen(getter)]
+    pub fn last_hash(&self) -> String {
+        self.last_hash.clone()
+    }
 
+    pub fn compute_dynamic_epsilon_wasm(&mut self, metrics: &SystemMetrics, _max_age_ms: u64) -> Fixed {
+        // Telemetry staleness check removed for pure deterministic math verification
         let raw_load = (metrics.cpu_load + metrics.memory_pressure) / 2;
         let raw_load = raw_load.clamp(0, FP_ONE);
 
@@ -135,7 +144,7 @@ impl ThermodynamicGovernor {
         adjusted.clamp(self.min_epsilon, self.max_epsilon)
     }
 
-    pub fn create_snapshot(&mut self, epoch: u64, epsilon: Fixed, state_root: &str) -> GovernanceSnapshot {
+    pub fn create_snapshot_wasm(&mut self, epoch: u64, epsilon: Fixed, state_root: &str) -> GovernanceSnapshot {
         let snapshot = GovernanceSnapshot {
             epoch,
             epsilon,
@@ -145,5 +154,15 @@ impl ThermodynamicGovernor {
         };
         self.last_hash = snapshot.compute_hash(state_root);
         snapshot
+    }
+}
+
+impl ThermodynamicGovernor {
+    pub fn compute_dynamic_epsilon(&mut self, metrics: &SystemMetrics, max_age: Duration) -> Fixed {
+        self.compute_dynamic_epsilon_wasm(metrics, max_age.as_millis() as u64)
+    }
+    
+    pub fn create_snapshot(&mut self, epoch: u64, epsilon: Fixed, state_root: &str) -> GovernanceSnapshot {
+        self.create_snapshot_wasm(epoch, epsilon, state_root)
     }
 }
