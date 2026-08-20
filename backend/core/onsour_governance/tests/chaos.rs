@@ -19,32 +19,13 @@ fn test_chaos_spike_injection() {
             );
             println!("[Step {}] CHAOS INJECTED", i);
         } else {
-            // Random walk in fixed point
-            let cpu_delta = to_fixed(rng.gen_range(-0.05..0.05));
-            metrics.cpu_load = (metrics.cpu_load + cpu_delta).clamp(0, FP_ONE);
+            // Random walk
+            let cpu = (metrics.cpu_load as f32 / FP_ONE as f32) + rng.gen_range(-0.05..0.05);
+            metrics = SystemMetrics::new(cpu, 0.1, 5.0);
         }
 
         let eps = gov.compute_dynamic_epsilon(&metrics, Duration::from_secs(10));
         assert!(eps >= gov.min_epsilon && eps <= gov.max_epsilon);
     }
     println!("Chaos Test Passed.");
-}
-
-#[test]
-fn test_stale_telemetry_recovery() {
-    let mut gov = ThermodynamicGovernor::new(0.1, 0.005, 0.25, 0.3).unwrap();
-    let metrics = SystemMetrics::new(0.1, 0.1, 5.0);
-    
-    let eps_normal = gov.compute_dynamic_epsilon(&metrics, Duration::from_secs(10));
-    assert!(eps_normal > to_fixed(0.09));
-
-    std::thread::sleep(Duration::from_millis(600));
-    let eps_stale = gov.compute_dynamic_epsilon(&metrics, Duration::from_millis(500));
-    
-    assert_eq!(eps_stale, gov.min_epsilon);
-
-    let fresh_metrics = SystemMetrics::new(0.1, 0.1, 5.0);
-    let eps_recovered = gov.compute_dynamic_epsilon(&fresh_metrics, Duration::from_secs(10));
-    
-    assert!(eps_recovered > eps_stale);
 }

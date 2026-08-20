@@ -1,6 +1,6 @@
 use island_runtime::module_api::OnsourModule;
 use island_runtime::Island;
-use rts_core::{Node, Edge};
+use rts_core::state::Fixed64;
 use serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -26,13 +26,21 @@ impl OnsourModule for CommerceReef {
         println!("Island [{}] initialized for RWA Tokenization.", self.id);
     }
 
-    fn on_converge(&mut self, _global_state: &[f32]) { }
+    fn on_converge(&mut self, _global_state: &[Fixed64]) { }
 
-    fn update(&mut self, _dt: f32) {
+    fn update(&mut self, _dt: Fixed64) {
         self.island.step();
+    }
+
+    fn set_epsilon(&mut self, epsilon: Fixed64) {
+        self.island.set_epsilon(epsilon);
     }
 
     fn get_state_root(&self) -> String {
         self.island.compute_state_root()
+    }
+
+    fn get_context_summary(&self) -> String {
+        self.island.get_context_summary()
     }
 }
