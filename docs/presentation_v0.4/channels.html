@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F0F4F8; color: #2D3748; }
+      .slide-container { width: 1280px; min-height: 720px; padding: 60px 80px; display: flex; flex-direction: column; justify-content: flex-start; background: #F0F4F8; }
+      .header-section { margin-top: 10px; }
+      .section-tag { font-size: 14px; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+      .page-title { font-size: 36px; font-weight: 800; color: #0A2540; line-height: 1.3; }
+      
+      .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+      
+      .channel-card { background: #FFFFFF; border: 1px solid #E2E8F0; padding: 30px; min-height: 450px; }
+      .card-header { font-size: 24px; font-weight: 900; color: #0A2540; margin-bottom: 20px; border-bottom: 2px solid #047857; padding-bottom: 10px; width: fit-content; }
+      
+      .node-container { display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
+      .node-item { display: flex; align-items: center; gap: 15px; }
+      .circle-node { width: 40px; height: 40px; border-radius: 50%; background: #047857; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0; }
+      .node-text { font-size: 18px; font-weight: 500; color: #2D3748; }
+      
+      .dashed-line { border-top: 2px dashed #CBD5E0; width: 100%; margin: 15px 0; }
+      
+      .math-highlight { background: #E2E8F0; padding: 2px 8px; font-family: monospace; font-weight: bold; color: #0A2540; }
+      .description { font-size: 16px; line-height: 1.6; color: #4A5568; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-section">
+            <div class="section-tag">ساختار معماری</div>
+            <h2 class="page-title">معماری دو کاناله و مقیاس‌های انرژی</h2>
+        </div>
+        
+        <div class="main-grid">
+            <!-- Left Column: Channels -->
+            <div class="channel-card">
+                <div class="card-header">کانال‌های پردازشی (α / β)</div>
+                <div class="node-container">
+                    <div class="node-item">
+                        <div class="circle-node">α</div>
+                        <div class="node-text">کانال تحریکی (Excitatory)</div>
+                    </div>
+                    <p class="description">فرمول: <span class="math-highlight">α = (θ + 1) / 2</span>. این کانال مسئول ترویج انتقال به سمت حالت‌های مثبت و افزایش قطبش سیستم است.</p>
+                    
+                    <div class="dashed-line"></div>
+                    
+                    <div class="node-item">
+                        <div class="circle-node" style="background: #0A2540;">β</div>
+                        <div class="node-text">کانال بازدارنده (Inhibitory)</div>
+                    </div>
+                    <p class="description">این کانال با ایجاد نیروی مخالف، از اشباع ناگهانی جلوگیری کرده و پایداری دینامیکی سیستم را در برابر نوسانات شدید حفظ می‌کند.</p>
+                </div>
+            </div>
+            
+            <!-- Right Column: Energy Scales -->
+            <div class="channel-card">
+                <div class="card-header">سلسله‌مراتب انرژی</div>
+                <div class="node-container">
+                    <div class="node-item">
+                        <div class="circle-node"><i class="fas fa-globe"></i></div>
+                        <div class="node-text">تعادل جهانی (Global Equilibrium)</div>
+                    </div>
+                    <p class="description">مقیاس انرژی <span class="math-highlight">E₀_global</span> که وضعیت کلان و فاز اصلی کل عامل هوشمند را تعیین می‌کند.</p>
+                    
+                    <div class="dashed-line"></div>
+                    
+                    <div class="node-item">
+                        <div class="circle-node" style="background: #0A2540;"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="node-text">تعادل محلی (Local Equilibrium)</div>
+                    </div>
+                    <p class="description">مقیاس‌های انرژی خرد <span class="math-highlight">E₀_local</span> که اجازه می‌دهند زیرسیستم‌ها بدون تغییر فاز کل سیستم، واکنش‌های سریع نشان دهند.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

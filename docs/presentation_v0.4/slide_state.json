@@ -1,0 +1,142 @@
+{
+  "project_info": {
+    "title": "معرفی معماری UIPT و هسته ریاضی Tanh-Brain",
+    "created": 1787003061.625,
+    "last_updated": 1787256819.39,
+    "total_slides": 12
+  },
+  "slides": [
+    {
+      "id": "title",
+      "state": "edited",
+      "pageNum": 1
+    },
+    {
+      "id": "challenge",
+      "state": "edited",
+      "pageNum": 2
+    },
+    {
+      "id": "theory",
+      "state": "edited",
+      "pageNum": 3
+    },
+    {
+      "id": "math_core",
+      "state": "edited",
+      "pageNum": 4
+    },
+    {
+      "id": "channels",
+      "state": "edited",
+      "pageNum": 5
+    },
+    {
+      "id": "tracks",
+      "state": "edited",
+      "pageNum": 6
+    },
+    {
+      "id": "memory_layers",
+      "state": "edited",
+      "pageNum": 7
+    },
+    {
+      "id": "fixed_point_migration",
+      "state": "edited",
+      "pageNum": 8
+    },
+    {
+      "id": "rust_core",
+      "state": "edited",
+      "pageNum": 9
+    },
+    {
+      "id": "benchmark",
+      "state": "edited",
+      "pageNum": 10
+    },
+    {
+      "id": "pass_miss",
+      "state": "edited",
+      "pageNum": 11
+    },
+    {
+      "id": "conclusion",
+      "state": "edited",
+      "pageNum": 12
+    }
+  ],
+  "outline": [
+    {
+      "id": "title",
+      "title": "معرفی معماری UIPT و هسته ریاضی Tanh-Brain",
+      "summary": "عنوان اصلی، معرفی پروژه و مشخصات ران‌تایم نسخه v0.4.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "challenge",
+      "title": "چالش‌های محاسباتی و ضرورت معماری نوین",
+      "summary": "بررسی محدودیت‌های مدل‌های سنتی هوش مصنوعی و نیاز به سیستم‌های بلادرنگ و کم‌مصرف.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "theory",
+      "title": "مبانی نظری و تز اصلی ران‌تایم",
+      "summary": "تز اصلی انطباق پایتون و ران‌تایم Rust بر پایه فیزیک پتانسیل لاندائو-گینزبورگ.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "math_core",
+      "title": "معادله کلیدی هسته ریاضی (Tanh-Brain)",
+      "summary": "تبیین فرمولاسیون ریاضی مرتبه اول و نقش پارامتر نظم و انرژی بحرانی.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "channels",
+      "title": "معماری دو کاناله و مقیاس‌های انرژی",
+      "summary": "بررسی کانال‌های تحریکی و بازدارنده همراه با سلسله‌مراتب تعادل جهانی و محلی.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "tracks",
+      "title": "رویکرد روش‌شناختی (Tracks A, B, C)",
+      "summary": "تفکیک اعتبارسنجی علمی، سنجش منابع و هم‌ارزی عددی.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "memory_layers",
+      "title": "معماری حافظه ۴ لایه (Memory Ontology)",
+      "summary": "تبیین لایه‌های حافظه عملیاتی، شواهد، بافت و دانش در مدل ONSOUR."
+    },
+    {
+      "id": "fixed_point_migration",
+      "title": "مهاجرت به Fixed-Point و تضمین دترمینیسم ریاضی",
+      "summary": "جایگزینی f32 با Q32.32 برای دستیابی به دترمینیسم مطلق بیت‌به‌بیت در تمامی پلتفرم‌ها."
+    },
+    {
+      "id": "rust_core",
+      "title": "پیاده‌سازی مهندسی در Rust (rts_core)",
+      "summary": "طراحی حافظه، ساختار نودها و ویژگی‌های عملکردی ران‌تایم سطح پایین.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "benchmark",
+      "title": "بنچمارک عملکردی و مقایسه منابع (Track B)",
+      "summary": "ارائه داده‌های تاخیر، مصرف حافظه و اندازه باینری در نسخه v0.4.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "pass_miss",
+      "title": "جدول ارزیابی معیارها (PASS/MISS Table)",
+      "summary": "بررسی انطباق کامل با معیارهای هفت‌گانه و تایید حکم نهایی.",
+      "image_plan": "Use a suitable image if needed"
+    },
+    {
+      "id": "conclusion",
+      "title": "نتیجه‌گیری و چشم‌انداز آینده",
+      "summary": "جمع‌بندی دستاوردها و مسیر توسعه به سمت WASM و no_std.",
+      "image_plan": "Use a suitable image if needed"
+    }
+  ]
+}

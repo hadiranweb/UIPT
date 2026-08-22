@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0A2540; color: #FFFFFF; }
+      .slide-container { width: 1280px; min-height: 720px; padding: 80px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(135deg, #0A2540 0%, #06172A 100%); position: relative; overflow: hidden; }
+      .header-badge { display: inline-flex; align-items: center; gap: 10px; background: rgba(4, 120, 87, 0.2); border: 1px solid #047857; padding: 8px 20px; border-radius: 30px; font-size: 16px; color: #34D399; font-weight: 600; width: fit-content; }
+      .main-title { font-size: 48px; font-weight: 800; line-height: 1.2; margin-top: 20px; color: #FFFFFF; }
+      .subtitle { font-size: 24px; color: #94A3B8; margin-top: 15px; font-weight: 400; line-height: 1.5; }
+      .footer-info { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 25px; margin-top: 40px; font-size: 16px; color: #94A3B8; }
+      .highlight { color: #34D399; font-weight: 600; }
+      .decorator { position: absolute; right: -100px; bottom: -100px; width: 400px; height: 400px; background: rgba(4, 120, 87, 0.1); border-radius: 50%; z-index: 1; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="decorator"></div>
+        <div>
+            <div class="header-badge">
+                <i class="fas fa-brain"></i>
+                پروژه UIPT و هسته ریاضی Tanh-Brain
+            </div>
+            <h1 class="main-title">معماری انتقال فاز تعاملی یکپارچه<br>و ران‌تایم بلادرنگ Rust</h1>
+            <p class="subtitle">طراحی و پیاده‌سازی کنترلرهای واکنش‌گر Always-On بر پایه مشخصات Runtime SPEC v0.4</p>
+        </div>
+        
+        <div class="footer-info">
+            <div>مخزن گیت‌هاب: <span class="highlight">github.com/hadiranweb/UIPT</span></div>
+            <div>تاریخ: تیر ماه ۱۴۰۵ (ژوئن ۲۰۲۶)</div>
+        </div>
+    </div>
+</body>
+</html>

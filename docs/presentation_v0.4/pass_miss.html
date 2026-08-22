@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #F0F4F8; color: #2D3748; }
+      .slide-container { width: 1280px; min-height: 720px; padding: 60px 80px; display: flex; flex-direction: column; justify-content: flex-start; background: #F0F4F8; }
+      .header-section { margin-top: 10px; }
+      .section-tag { font-size: 14px; font-weight: 700; color: #047857; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+      .page-title { font-size: 36px; font-weight: 900; color: #0A2540; line-height: 1.3; }
+      
+      .table-container { margin-top: 40px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 4px; overflow: hidden; }
+      .eval-table { width: 100%; border-collapse: collapse; text-align: right; }
+      .eval-table th { background: #0A2540; color: #FFFFFF; padding: 15px 20px; font-size: 16px; font-weight: 700; }
+      .eval-table td { padding: 12px 20px; border-bottom: 1px solid #F1F5F9; font-size: 15px; }
+      .eval-table tr:nth-child(even) { background: #F8FAFC; }
+      
+      .status-pass { color: #047857; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+      .id-col { font-family: monospace; font-weight: 700; color: #64748B; }
+      
+      .verdict-box { margin-top: 30px; background: #047857; color: #FFFFFF; padding: 20px 30px; border-radius: 4px; display: flex; align-items: center; justify-content: space-between; }
+      .verdict-label { font-size: 18px; font-weight: 600; opacity: 0.9; }
+      .verdict-value { font-size: 24px; font-weight: 900; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="header-section">
+            <div class="section-tag">ارزیابی نهایی</div>
+            <h2 class="page-title">جدول ارزیابی معیارها (PASS/MISS Table)</h2>
+        </div>
+        
+        <div class="table-container">
+            <table class="eval-table">
+                <thead>
+                    <tr>
+                        <th>شناسه</th>
+                        <th>نام معیار</th>
+                        <th>آستانه الزامی</th>
+                        <th>مقدار اندازه‌گیری شده</th>
+                        <th>وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="id-col">C1</td>
+                        <td>برابری عددی (Numeric Equivalence)</td>
+                        <td>&lt; 1e-4</td>
+                        <td>&lt; 1e-5</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C2</td>
+                        <td>تاخیر مطلق (Latency)</td>
+                        <td>&lt; 500 ns</td>
+                        <td>~27 ns (Scalar)</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C3</td>
+                        <td>حافظه نود کاربردی</td>
+                        <td>&le; 32 Bytes</td>
+                        <td>24 Bytes</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C4</td>
+                        <td>اندازه باینری</td>
+                        <td>&lt; 1 MB</td>
+                        <td>&lt; 100 KB</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C5</td>
+                        <td>مزیت نسبت به پایتون</td>
+                        <td>&gt; 20x</td>
+                        <td>&gt; 50x</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C6</td>
+                        <td>مقایسه با Baselineها</td>
+                        <td>گزارش شده</td>
+                        <td>بله (EWMA/CUSUM)</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td class="id-col">C7</td>
+                        <td>محیط بنچمارک</td>
+                        <td>گزارش شده</td>
+                        <td>بله (JSON)</td>
+                        <td><span class="status-pass"><i class="fas fa-check-circle"></i> PASS</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="verdict-box">
+            <div class="verdict-label">حکم نهایی ران‌تایم UIPT v0.4:</div>
+            <div class="verdict-value">SUPPORTED_RESOURCE_CLAIM</div>
+        </div>
+    </div>
+</body>
+</html>
