@@ -58,7 +58,9 @@
 - [x] Add stable Theory deep-link anchors and normalize stale Developer Hub documentation targets
 - [x] Integrate accessible palette trigger, focus restoration, keyboard navigation, and reduced-motion behavior into GlobalNavigation
 - [x] Add command registry/navigation helper tests and run typecheck, Vitest, production build, and desktop/mobile browser QA
-- [ ] Audit complete ONSOUR website payload, generated artifacts, secrets, and current Git remote before full push
-- [ ] Run final website typecheck, Vitest, production build, and deployment-state verification before push
-- [ ] Commit and push the complete website, documentation, tests, and configuration to the approved GitHub destination
-- [ ] Verify remote branch, commit SHA, working tree status, and pushed website version
+- [x] Audit complete ONSOUR website payload, generated artifacts, secrets, and current Git remote before full push
+- [x] Run final website typecheck, Vitest, production build, and deployment-state verification before push
+- [x] Commit and push the complete website, documentation, tests, and configuration to the approved GitHub destination
+- [x] Verify remote branch, commit SHA, working tree status, and pushed website version
+- [x] Explicitly verify the live ONSOUR deployment state after the website push and record the response/build marker
+- [x] Record the pushed website version marker alongside the verified GitHub commit SHA
