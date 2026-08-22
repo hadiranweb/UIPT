@@ -8,6 +8,14 @@
 
 ---
 
+## ONSOUR Web HUD
+نسخه‌ی مستقل وب ONSOUR در مسیر [`frontend/apps/onsour-investor-site/`](./frontend/apps/onsour-investor-site/) و شاخه‌ی بازبینی `feature/onsour-web-hud` قرار دارد. برای راه‌اندازی، تست و استقرار از راهنماهای زیر استفاده کنید:
+
+- [راهنمای توسعه‌دهندگان ONSOUR Web HUD](./docs/ONSOUR_WEB_HUD_DEVELOPER_GUIDE.md)
+- [راهنمای استقرار ONSOUR Web HUD](./docs/ONSOUR_WEB_HUD_DEPLOYMENT.md)
+
+این لایه‌ی وب مستقل از هسته‌ی UIPT توسعه می‌یابد، به `main` دست‌کاری مستقیم نمی‌کند و benchmark Rayon را به‌عنوان یک reference measurement تک‌ماشینه، نه یک ادعای universal performance، نمایش می‌دهد.
+
 ## ۲. مستندات کلیدی فاز ۲
 - [🚀 گزارش اتمام فاز ۲ (Phase 2 Completion)](./docs/PHASE_2_COMPLETION_REPORT.md): خلاصه دستاوردهای معماری کاربردی.
 - [⚖️ پروتکل حاکمیت ترمودینامیکی (Governance Protocol)](./docs/GOVERNANCE_BENCHMARK_REPORT.md): جزئیات حاکمیت دترمینستیک و ایمن.

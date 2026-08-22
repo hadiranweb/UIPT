@@ -3,9 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "description": "ONSOUR Unified Ecosystem Monorepo - Foundation Level 1",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
     "build:core": "cd backend/core/rts_core && wasm-pack build --target web --out-dir ../../../frontend/packages/rts-core-wasm",
     "dev:portal": "pnpm --filter portal dev",
+    "dev:onsour": "pnpm --filter onsour-investor-site dev",
+    "check:onsour": "pnpm --filter onsour-investor-site check",
+    "test:onsour": "pnpm --filter onsour-investor-site test",
+    "build:onsour": "pnpm --filter onsour-investor-site build",
     "test:all": "cargo test --manifest-path backend/Cargo.toml && pnpm test",
     "infra:up": "docker-compose up -d"
   },

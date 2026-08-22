@@ -1,0 +1,45 @@
+name: ONSOUR Web HUD
+
+on:
+  push:
+    branches:
+      - feature/onsour-web-hud
+  pull_request:
+    branches:
+      - main
+      - feature/onsour-web-hud
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Typecheck, tests, and production build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: pnpm
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.21.0
+          run_install: false
+
+      - name: Install workspace dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check ONSOUR Web HUD
+        run: pnpm check:onsour
+
+      - name: Run ONSOUR test suites
+        run: pnpm test:onsour
+
+      - name: Build ONSOUR Web HUD
+        run: pnpm build:onsour

@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+**/node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+target/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and runtime artifacts
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage and caches
+coverage/
+.nyc_output/
+.cache/
+.turbo/
+
+# Local tooling
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+*~
