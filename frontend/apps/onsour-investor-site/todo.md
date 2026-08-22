@@ -20,9 +20,9 @@
 - [x] Run final verification (typecheck, Vitest unit tests, and production build)
 - [x] Commit all ONSOUR/UIPT architectural layers, contracts, UI observatories, and docs with meaningful messages
 - [x] Push to the target user GitHub repository and verify remote sync status (published via auto-publish checkpoint)
-- [ ] Import the current ONSOUR web application into hadiranweb/UIPT on feature/onsour-web-hud without overwriting existing UIPT files
-- [ ] Add developer and deployment guides for the ONSOUR Web HUD branch
-- [ ] Add reproducible local Git, install, check, test, build, and development commands
-- [ ] Audit the branch for secrets, temporary files, and generated artifacts
-- [ ] Run final validation and push feature/onsour-web-hud to hadiranweb/UIPT
-- [ ] Verify the remote branch, commit SHA, and developer documentation after push
+- [x] Import the current ONSOUR web application into hadiranweb/UIPT on feature/onsour-web-hud without overwriting existing UIPT files
+- [x] Add developer and deployment guides for the ONSOUR Web HUD branch
+- [x] Add reproducible local Git, install, check, test, build, and development commands
+- [x] Audit the branch for secrets, temporary files, and generated artifacts
+- [x] Run final validation and push feature/onsour-web-hud to hadiranweb/UIPT
+- [x] Verify the remote branch, commit SHA, and developer documentation after push
