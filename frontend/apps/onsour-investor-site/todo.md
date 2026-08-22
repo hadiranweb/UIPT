@@ -1,0 +1,28 @@
+# ONSOUR / UIPT Independent Execution Plan (Attached Spec)
+
+- [x] Phase 0: Baseline & project governance contract (Manifest, ADR-001, symbol table v1, analysis contract v1)
+- [x] Phase 1: Theory extraction & mathematical source mapping (`UIPT-A.md`, `TANH_BRAIN_MATH_CORE.md` reflection in `/theory`)
+- [x] Phase 2: Rust State & Numeric Kernel verification (`state.rs`, `math.rs`, Q32.32 layout & tanh tests)
+- [x] Phase 3: Deterministic Graph Execution & Double Buffering (`graph.rs`, Gather/Apply, atomicity)
+- [x] Phase 4: Thermodynamic Governance & Replay (`onsour_governance`, dispersion, epsilon, rollback)
+- [x] Phase 5: WASM Boundary & Shared Contracts integration (`rts_wasm`, provenance, schema migration)
+- [x] Phase 6: Product Surfaces & Persistence (Live Lab, Graph Explorer, tRPC, MySQL database views)
+- [x] Phase 7: End-to-end testing, CI/CD, and release verification
+- [x] Add pure UIPT theory math utilities and unit tests for potential, tanh, phase, minima, and deterministic Langevin preview
+- [x] Build the interactive Landau-Ginzburg potential explorer with validated controls and minima readouts
+- [x] Build interactive phase-transition and Mean-Field Tanh visualizations with theory/runtime status labels
+- [x] Build seeded Langevin trajectory preview with replay and reduced-motion behavior
+- [x] Integrate the observatory into /theory with responsive, accessible styling and source/status metadata
+- [x] Update UIPT theory source map for every interactive visualization and implementation boundary
+- [x] Run typecheck, Vitest, production build, and desktop/mobile browser verification for /theory
+- [x] Audit Git status, remote repository configuration, and unstaged artifacts
+- [x] Clean up local temporary files, build outputs, and ensure no secrets or .env files are staged
+- [x] Run final verification (typecheck, Vitest unit tests, and production build)
+- [x] Commit all ONSOUR/UIPT architectural layers, contracts, UI observatories, and docs with meaningful messages
+- [x] Push to the target user GitHub repository and verify remote sync status (published via auto-publish checkpoint)
+- [ ] Import the current ONSOUR web application into hadiranweb/UIPT on feature/onsour-web-hud without overwriting existing UIPT files
+- [ ] Add developer and deployment guides for the ONSOUR Web HUD branch
+- [ ] Add reproducible local Git, install, check, test, build, and development commands
+- [ ] Audit the branch for secrets, temporary files, and generated artifacts
+- [ ] Run final validation and push feature/onsour-web-hud to hadiranweb/UIPT
+- [ ] Verify the remote branch, commit SHA, and developer documentation after push

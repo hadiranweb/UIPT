@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1787022384146,
+      "tag": "0000_faithful_ser_duncan",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1787023684461,
+      "tag": "0001_whole_luckman",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1787244444858,
+      "tag": "0002_dizzy_killraven",
+      "breakpoints": true
+    }
+  ]
+}
