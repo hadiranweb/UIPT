@@ -26,3 +26,39 @@
 - [x] Audit the branch for secrets, temporary files, and generated artifacts
 - [x] Run final validation and push feature/onsour-web-hud to hadiranweb/UIPT
 - [x] Verify the remote branch, commit SHA, and developer documentation after push
+- [x] Audit existing rts_core and rts_wasm implementation in UIPT workspace
+- [x] Establish secure WASM build / fallback boundary for browser runtime
+- [x] Implement versioned WASM bridge for Dispersion Lab and HUD telemetry
+- [x] Connect real native timing and provenance metadata to HUD and database persistence
+- [x] Run validation, Vitest suites, production build, and browser QA verification
+- [x] Audit frontend route structure and identify hidden or under-exposed ONSOUR capabilities
+- [x] Design a comprehensive Capability Matrix & Live Control Center on the homepage and documentation
+- [x] Build interactive ONSOUR Capability Matrix showcasing Governance, WASM/Rayon, Replay, Persistence, and UIPT
+- [x] Connect the new capability surface to live actions and navigation shortcuts across all pages
+- [x] Run verification, Vitest suites, production build, and browser QA verification
+- [x] Design and implement Live Dispersion Lab Interactive Tour component with local storage state
+- [x] Add tour steps covering graph upload, epsilon governance, database persistence, and graph explorer
+- [x] Connect Tour trigger button in the Live Dispersion Lab header and docs navigation
+- [x] Run verification, Vitest suites, production build, and browser QA verification
+- [x] Create comprehensive ONSOUR Super-Platform & Technical SEO Redesign Master Plan
+- [x] Implement dedicated super-platform routes and enhanced homepage telemetry gateway
+- [x] Run verification, Vitest suites, production build, and browser QA verification
+- [x] Create structured SEO articles registry and Developer Docs taxonomy
+- [x] Implement /articles and /articles/:slug routes with full metadata and JSON-LD
+- [x] Implement /ecosystem Developer Documentation Hub with SDKs and API contracts
+- [x] Run verification, Vitest suites, production build, and browser QA verification
+- [x] Build shared GlobalNavigation and GlobalFooter with centralized route registry
+- [x] Replace duplicated page headers and footers across Home, Docs/Lab, Theory, Articles, ArticleDetail, and Ecosystem pages
+- [x] Add responsive mobile menu, active route state, skip link, keyboard focus management, and reduced-motion behavior
+- [x] Add semantic SEO-friendly navigation, breadcrumb/deep-link polish, and safe external GitHub links
+- [x] Run typecheck, Vitest, production build, and desktop/mobile browser QA for all public routes
+- [x] Add visible breadcrumb trails to article detail, Developer Hub, Theory, and Engine Specs content surfaces
+- [x] Verify all navigation deep links and external repository destinations after the global navigation redesign
+- [x] Implement global Ctrl+K/Cmd+K command palette with local search across platform routes, UIPT theory sections, and Engine Specs
+- [x] Add stable Theory deep-link anchors and normalize stale Developer Hub documentation targets
+- [x] Integrate accessible palette trigger, focus restoration, keyboard navigation, and reduced-motion behavior into GlobalNavigation
+- [x] Add command registry/navigation helper tests and run typecheck, Vitest, production build, and desktop/mobile browser QA
+- [ ] Audit complete ONSOUR website payload, generated artifacts, secrets, and current Git remote before full push
+- [ ] Run final website typecheck, Vitest, production build, and deployment-state verification before push
+- [ ] Commit and push the complete website, documentation, tests, and configuration to the approved GitHub destination
+- [ ] Verify remote branch, commit SHA, working tree status, and pushed website version

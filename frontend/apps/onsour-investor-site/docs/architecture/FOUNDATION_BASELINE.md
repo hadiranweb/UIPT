@@ -1,8 +1,8 @@
 # ONSOUR Foundation Baseline
 
-**Baseline date:** 2026-08-20
-**ONSOUR web repository:** `onsour-investor-site`
-**UIPT reference repository:** `hadiranweb/UIPT`
+**Baseline date:** 2026-08-20  
+**ONSOUR web repository:** `onsour-investor-site`  
+**UIPT reference repository:** `hadiranweb/UIPT`  
 **GenFlow status:** external, frozen, and explicitly out of scope for this execution cycle
 
 ## Repository anchors

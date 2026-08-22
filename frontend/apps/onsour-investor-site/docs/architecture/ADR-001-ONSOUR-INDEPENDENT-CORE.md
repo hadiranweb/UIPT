@@ -1,7 +1,7 @@
 # ADR-001: ONSOUR به‌عنوان هسته‌ی مستقل و قابل اتصال
 
-**Status:** Accepted
-**Date:** 2026-08-20
+**Status:** Accepted  
+**Date:** 2026-08-20  
 **Scope:** ONSOUR/UIPT foundation cycle
 
 ## Context

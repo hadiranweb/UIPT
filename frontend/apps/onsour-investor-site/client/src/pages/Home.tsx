@@ -1,6 +1,8 @@
 /* Living Infrastructure direction: the page behaves like a calm scientific instrument—dark field, asymmetric editorial grid, cyan telemetry, amber intervention, and precise mechanism-first copy. */
 import { useMemo, useState } from "react";
-import { Link } from "wouter";
+import { CapabilityMatrixShowcase } from "@/components/CapabilityMatrixShowcase";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalFooter } from "@/components/GlobalFooter";
 import {
   ArrowDownRight,
   ArrowRight,
@@ -125,20 +127,8 @@ export default function Home() {
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
   return (
-    <main className="site-shell">
-      <header className="site-nav">
-        <button className="brand-lockup" onClick={() => scrollTo("top")} aria-label="Back to top">
-          <span className="brand-orbit-mark" aria-hidden="true"><span /></span>
-          <span>ONSOUR</span>
-        </button>
-        <nav className="nav-links" aria-label="Primary navigation">
-          <button onClick={() => scrollTo("thesis")}>Thesis</button>
-          <button onClick={() => scrollTo("loop")}>Control loop</button>
-          <button onClick={() => scrollTo("proof")}>Proof</button>
-          <Link href="/docs" className="nav-link-doc">Technical Specs</Link>
-        </nav>
-        <button className="nav-cta" onClick={() => scrollTo("contact")}>Request briefing <ArrowUpRightIcon /></button>
-      </header>
+    <main id="main-content" className="site-shell">
+      <GlobalNavigation />
 
       <section id="top" className="hero-section">
         <div className="hero-image" style={{ backgroundImage: `url(${heroImage})` }} />
@@ -265,6 +255,12 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="capabilities" className="section section-capabilities">
+        <div className="container">
+          <CapabilityMatrixShowcase />
+        </div>
+      </section>
+
       <section id="contact" className="section section-close">
         <div className="container close-grid">
           <div><SectionKicker>06 / THE INVITATION</SectionKicker><h2>Build systems<br /><span>that hold.</span></h2><p>ONSOUR is the governance layer for the next generation of resilient, autonomous intelligence.</p></div>
@@ -272,7 +268,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="site-footer"><div className="container footer-row"><div className="footer-brand"><span className="brand-orbit-mark" aria-hidden="true"><span /></span><span>ONSOUR</span></div><span className="footer-note">A self-regulating runtime for resilient intelligence.</span><span className="footer-meta">© 2026 / BUILT WITH RUST</span></div></footer>
+      <GlobalFooter />
     </main>
   );
 }

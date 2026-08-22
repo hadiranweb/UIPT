@@ -1,7 +1,7 @@
 # UIPT Symbol Contract v1
 
-**Status:** Draft for foundation review
-**Authority:** `hadiranweb/UIPT/theory` and verified Rust source paths
+**Status:** Draft for foundation review  
+**Authority:** `hadiranweb/UIPT/theory` and verified Rust source paths  
 **Consumer:** ONSOUR documentation, Rust tests, WASM bridge and future TypeScript contracts
 
 ## Symbol table

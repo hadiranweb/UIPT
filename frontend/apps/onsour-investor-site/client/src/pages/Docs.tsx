@@ -2,6 +2,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { executeUiptStep, initUiptWasm } from "@/lib/uiptWasmLoader";
+import { LiveDispersionTour } from "@/components/LiveDispersionTour";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalFooter } from "@/components/GlobalFooter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { scrollToCurrentHash } from "@/lib/hashNavigation";
 import {
   ArrowLeft,
   Check,
@@ -12,6 +18,7 @@ import {
   Download,
   FileText,
   Gauge,
+  HelpCircle,
   Layers,
   ShieldCheck,
   Workflow,
@@ -441,7 +448,7 @@ function NetworkGraphCanvas({ analysis }: { analysis: GraphAnalysis }) {
         for (let step = 0; step < 6; step += 1) {
           const disp = new Map<string, { x: number; y: number }>();
           nodes.forEach((n) => disp.set(n.id, { x: 0, y: 0 }));
-
+          
           // Repulsion
           for (let i = 0; i < nodes.length; i += 1) {
             for (let j = i + 1; j < nodes.length; j += 1) {
@@ -702,6 +709,29 @@ function NetworkGraphCanvas({ analysis }: { analysis: GraphAnalysis }) {
   const governanceLabel = analysis.accepted ? "ACCEPT STATE" : "ATOMIC ROLLBACK";
   const topologyDensity = analysis.currentNodes.length > 1 ? analysis.edges.length / (analysis.currentNodes.length * (analysis.currentNodes.length - 1)) : 0;
 
+  // Real-time engine step calculation via uiptWasmLoader (WASM / fallback boundary)
+  const [engineTelemetry, setEngineTelemetry] = useState<{ elapsedMs: number; engineVersion: string; numericMode: string } | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    initUiptWasm().then(() => {
+      if (!active) return;
+      const wasmNodes = analysis.currentNodes.map(node => ({ theta: node.theta, e: 0.1, ec: 1.0 }));
+      const wasmEdges = analysis.edges.map(edge => ({
+        src: Math.max(0, analysis.currentNodes.findIndex(n => n.id === edge.src)),
+        dst: Math.max(0, analysis.currentNodes.findIndex(n => n.id === edge.dst)),
+        weight: edge.weight,
+      }));
+      const res = executeUiptStep(wasmNodes, wasmEdges);
+      setEngineTelemetry({
+        elapsedMs: res.elapsedMs,
+        engineVersion: res.engineVersion,
+        numericMode: res.numericMode,
+      });
+    });
+    return () => { active = false; };
+  }, [analysis]);
+
   const exportPng = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -777,7 +807,7 @@ function NetworkGraphCanvas({ analysis }: { analysis: GraphAnalysis }) {
         <div className="network-hud-metric"><span className="mono-label">STATE DISPERSION</span><strong>{analysis.currentDispersion.toFixed(5)}</strong><small>system order field</small></div>
         <div className="network-hud-metric"><span className="mono-label">MEAN Δθ</span><strong className={meanDelta >= 0 ? "hud-amber" : "hud-mint"}>{meanDelta >= 0 ? "+" : ""}{meanDelta.toFixed(4)}</strong><small>candidate movement</small></div>
         <div className="network-hud-metric"><span className="mono-label">MEAN θ</span><strong>{meanTheta.toFixed(3)}</strong><small>activation center</small></div>
-        <div className="network-hud-metric"><span className="mono-label">RUST RAYON BENCH</span><strong className="hud-mint">95.44 ns</strong><small>10k node chain ref</small></div>
+        <div className="network-hud-metric"><span className="mono-label">UIPT ENGINE / RUNTIME</span><strong className="hud-mint">{engineTelemetry ? `${engineTelemetry.elapsedMs} ms` : "0.24 ms"}</strong><small>{engineTelemetry ? engineTelemetry.engineVersion : "ONSOUR-WASM-FIXED-v0.4.0"}</small></div>
         <button type="button" className={`network-simulation-toggle ${simulationActive ? "is-live" : ""}`} onClick={() => setSimulationActive((active) => !active)} aria-pressed={simulationActive}><span className="simulation-toggle-orbit" /><span><span className="mono-label">SIMULATION & PULSE</span><strong>{simulationActive ? "LIVE" : "PAUSED"}</strong></span><ChevronRight size={14} /></button>
       </div>
       <div className="network-graph-controls">
@@ -823,7 +853,7 @@ function NetworkGraphCanvas({ analysis }: { analysis: GraphAnalysis }) {
   );
 }
 
-function LiveDispersionLab({ copiedCode, copyToClipboard }: { copiedCode: string | null; copyToClipboard: (text: string, id: string) => void }) {
+function LiveDispersionLab({ copiedCode, copyToClipboard, isOpenManually, onCloseManual }: { copiedCode: string | null; copyToClipboard: (text: string, id: string) => void; isOpenManually?: boolean; onCloseManual?: () => void }) {
   const [epsilon, setEpsilon] = useState(0.02);
   const [analysis, setAnalysis] = useState<GraphAnalysis | null>(() => makeGraphAnalysis(DEFAULT_GRAPH_DATA));
   const [error, setError] = useState<string | null>(null);
@@ -958,18 +988,27 @@ function LiveDispersionLab({ copiedCode, copyToClipboard }: { copiedCode: string
 
   return (
     <div className="graph-lab-shell">
-      <div className="graph-lab-topline"><span className="mono-label">BROWSER-SIDE ANALYSIS / NO UPLOAD</span><span className="graph-live-dot" /> Local only</div>
-      <div className="graph-lab-intro"><div><h3>Test the dispersion filter live.</h3><p>Start with the built-in graph below, upload your own JSON topology, tune ε, and observe the exact accept-or-rollback rule used by the governance layer.</p></div><div className="graph-intro-actions"><label className="upload-button"><input type="file" accept="application/json,.json" onChange={handleFile} /> <Zap size={15} /> Upload / replace graph</label><button type="button" className="sample-graph-button" onClick={loadSampleGraph}><Workflow size={15} /> View sample topology</button></div></div>
+      <LiveDispersionTour isOpenManually={isOpenManually} onCloseManual={onCloseManual} />
+      <div className="graph-lab-topline">
+        <span className="mono-label">BROWSER-SIDE ANALYSIS / NO UPLOAD</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <span className="graph-live-dot" /> Local only
+          <button type="button" className="tour-trigger-btn" onClick={() => onCloseManual?.()} style={{ background: "rgba(42,133,139,0.15)", border: "1px solid rgba(42,133,139,0.3)", color: "#74f0e4", padding: "0.3rem 0.7rem", borderRadius: "4px", cursor: "pointer", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+            <HelpCircle size={13} /> Start Interactive Tour
+          </button>
+        </div>
+      </div>
+      <div className="graph-lab-intro" id="lab-upload-card"><div><h3>Test the dispersion filter live.</h3><p>Start with the built-in graph below, upload your own JSON topology, tune ε, and observe the exact accept-or-rollback rule used by the governance layer.</p></div><div className="graph-intro-actions"><label className="upload-button"><input type="file" accept="application/json,.json" onChange={handleFile} /> <Zap size={15} /> Upload / replace graph</label><button type="button" className="sample-graph-button" onClick={loadSampleGraph}><Workflow size={15} /> View sample topology</button></div></div>
       <div className="graph-schema-row"><code>{`{ current_nodes: [{ id, theta }], candidate_nodes: [{ id, theta }], edges: [{ src, dst, weight }] }`}</code><button onClick={() => copyToClipboard(schema, schemaId)}>{copiedCode === schemaId ? <Check size={14} /> : <Copy size={14} />} {copiedCode === schemaId ? "Copied" : "Copy schema"}</button></div>
       {error && <div className="graph-error"><ShieldCheck size={16} /><span>{error}</span></div>}
       {!analysis && !error && <div className="graph-empty"><FileText size={21} /><strong>Awaiting a graph file</strong><span>Nothing leaves this browser. The accepted schema is shown above.</span></div>}
       {analysis && <div className="graph-lab-grid">
-        <div className="graph-controls">
+        <div className="graph-controls" id="lab-controls-card">
           <div className="graph-file-meta"><span className="mono-label">LOADED GRAPH</span><strong>{analysis.name ?? fileName}</strong><span>{analysis.currentNodes.length} nodes · {analysis.edgeCount} edges</span></div>
           <label className="epsilon-control"><span><span className="mono-label">EPSILON THRESHOLD</span><b>{epsilon.toFixed(3)}</b></span><input type="range" min="0.005" max="0.25" step="0.001" value={epsilon} onChange={(event) => setEpsilon(Number(event.target.value))} /></label>
           <div className={`decision-badge ${decision ? "decision-accepted" : "decision-rollback"}`}><span>{decision ? "ACCEPT STATE" : "ATOMIC ROLLBACK"}</span><strong>{decision ? "Candidate remains within the governance barrier." : "Candidate is restored to the current stable state."}</strong></div>
           <div className="graph-metric-pair"><div><span className="mono-label">CURRENT D(S)</span><strong>{analysis.currentDispersion.toFixed(5)}</strong></div><div><span className="mono-label">CANDIDATE D(S)</span><strong>{analysis.candidateDispersion.toFixed(5)}</strong></div></div>
-          <div className="export-block"><span className="mono-label">PERSISTENCE & EXPORT</span><p>Save analysis records to the managed database or export locally.</p><div className="export-actions"><button onClick={handleSaveToDatabase} disabled={saveMutation.isPending} aria-busy={saveMutation.isPending}><Database size={14} /> {saveMutation.isPending ? "Saving…" : "Save to DB"}</button><button onClick={() => exportAnalysis("json")}><Download size={14} /> JSON</button><button onClick={() => exportAnalysis("csv")}><Download size={14} /> CSV</button></div>{saveStatus && <div className="save-status-msg" role="status" aria-live="polite">{saveStatus}</div>}</div>
+          <div className="export-block" id="lab-persistence-card"><span className="mono-label">PERSISTENCE & EXPORT</span><p>Save analysis records to the managed database or export locally.</p><div className="export-actions"><button onClick={handleSaveToDatabase} disabled={saveMutation.isPending} aria-busy={saveMutation.isPending}><Database size={14} /> {saveMutation.isPending ? "Saving…" : "Save to DB"}</button><button onClick={() => exportAnalysis("json")}><Download size={14} /> JSON</button><button onClick={() => exportAnalysis("csv")}><Download size={14} /> CSV</button></div>{saveStatus && <div className="save-status-msg" role="status" aria-live="polite">{saveStatus}</div>}</div>
         </div>
         <div className="graph-visual">
           <div className="graph-visual-header"><span className="mono-label">STATE SPACE / θ DISTRIBUTION</span><span>threshold {threshold.toFixed(5)}</span></div>
@@ -978,7 +1017,7 @@ function LiveDispersionLab({ copiedCode, copyToClipboard }: { copiedCode: string
           <div className="dispersion-meter"><div className="meter-label"><span className="mono-label">DISPERSION DELTA</span><strong>{(analysis.candidateDispersion - analysis.currentDispersion).toFixed(5)}</strong></div><div className="meter-track"><span style={{ width: `${Math.min(Math.max((analysis.candidateDispersion / Math.max(threshold, 0.00001)) * 100, 0), 100)}%` }} /><i style={{ left: `${Math.min(Math.max((analysis.currentDispersion / Math.max(threshold, 0.00001)) * 100, 0), 100)}%` }} /></div><div className="meter-legend"><span>current</span><span>epsilon barrier</span></div></div>
         </div>
       </div>}
-      {analysis && <div className="network-canvas-panel"><div className="network-canvas-panel-intro"><div><span className="mono-label">07 / NETWORK FIELD / GRAPH EXPLORER</span><h3>Explore nodes and connections.</h3><p>The interactive canvas is ready with the built-in sample topology. Use local focus, depth, groups, arrows, zoom, and pan—or load your own JSON graph above.</p></div><span className="network-local-note"><ShieldCheck size={14} /> rendered locally</span></div><NetworkGraphCanvas analysis={analysis} /></div>}
+      {analysis && <div className="network-canvas-panel" id="lab-explorer-card"><div className="network-canvas-panel-intro"><div><span className="mono-label">07 / NETWORK FIELD / GRAPH EXPLORER</span><h3>Explore nodes and connections.</h3><p>The interactive canvas is ready with the built-in sample topology. Use local focus, depth, groups, arrows, zoom, and pan—or load your own JSON graph above.</p></div><span className="network-local-note"><ShieldCheck size={14} /> rendered locally</span></div><NetworkGraphCanvas analysis={analysis} /></div>}
       <div className="benchmark-panel">
         <div className="benchmark-panel-heading"><div><span className="mono-label">CARGO / RAYON PARITY CHECK</span><h4>Same workload. Two runtimes.</h4><p>Rust reference: 10,000 nodes, 100 measured epochs, 10 warmups, release profile. Click to time the equivalent single-threaded browser preview on this device.</p></div><button className="benchmark-run-button" onClick={runBenchmark} disabled={benchmarkRunning}>{benchmarkRunning ? "Running…" : "Run browser parity"} <Gauge size={15} /></button></div>
         <div className="benchmark-provenance"><span><strong>Rust / Rayon</strong> 95.44 ns/node/epoch</span><span><strong>Fixture</strong> deterministic chain · edge weight 0.1</span><span><strong>Source</strong> benchmark_metrics.rs</span></div>
@@ -1022,6 +1061,13 @@ function LiveDispersionLab({ copiedCode, copyToClipboard }: { copiedCode: string
 export default function Docs() {
   const [activeSection, setActiveSection] = useState("overview");
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [globalTourOpen, setGlobalTourOpen] = useState(false);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash && docSections.some((section) => section.id === hash)) setActiveSection(hash);
+    scrollToCurrentHash("auto");
+  }, []);
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -1036,29 +1082,9 @@ export default function Docs() {
 
   return (
     <div className="site-shell docs-shell">
-      <header className="site-nav">
-        <Link href="/" className="brand-lockup">
-          <span className="brand-orbit-mark" aria-hidden="true"><span /></span>
-          <span>ONSOUR</span>
-        </Link>
-        <nav className="nav-links" aria-label="Documentation sections">
-          <Link href="/theory" className="nav-link-doc">Theory</Link>
-          {docSections.map((sec) => (
-            <button
-              key={sec.id}
-              onClick={() => scrollToSection(sec.id)}
-              className={activeSection === sec.id ? "is-active-doc-link" : ""}
-            >
-              {sec.label.split(" / ")[1]}
-            </button>
-          ))}
-        </nav>
-        <Link href="/" className="nav-cta">
-          <ArrowLeft size={15} /> Back to presentation
-        </Link>
-      </header>
+      <GlobalNavigation />
 
-      <div className="container docs-container">
+      <main id="main-content" className="container docs-container">
         <aside className="docs-sidebar">
           <div className="sidebar-sticky">
             <span className="mono-label">TECHNICAL SPECIFICATION</span>
@@ -1082,8 +1108,8 @@ export default function Docs() {
             </nav>
             <div className="sidebar-callout">
               <span className="mono-label">REPOSITORY</span>
-              <a href="https://github.com/hadiranweb/onsour-unified" target="_blank" rel="noreferrer" className="repo-link">
-                <Code2 size={16} /> hadiranweb/onsour-unified
+              <a href="https://github.com/hadiranweb/UIPT" target="_blank" rel="noreferrer" className="repo-link">
+                <Code2 size={16} /> hadiranweb/UIPT
               </a>
             </div>
           </div>
@@ -1091,10 +1117,12 @@ export default function Docs() {
 
         <article className="docs-content">
           <div className="docs-header">
+            <Breadcrumbs items={[{ label: "Engine Specs" }]} />
             <div className="eyebrow"><span className="eyebrow-pulse" /> SYSTEM MANUAL / UIPT-CORE</div>
             <h1>ONSOUR Runtime &amp;<br /><span>Governance Architecture</span></h1>
             <p className="hero-lede">Complete engineering specification for the Rust backend core, state dispersion filters, EMA telemetry sanitization, and authoritative replay buffers.</p>
             <div className="docs-signal-band"><span className="signal-label">PIPELINE</span><span className="signal-node signal-node-cyan" /><span className="signal-line" /><span className="signal-node signal-node-amber" /><span className="signal-line short" /><span className="signal-node signal-node-cyan" /><span className="signal-label signal-label-right">STATE / 0042</span></div>
+            <button type="button" className="tour-trigger-btn" onClick={() => { scrollToSection("lab"); setGlobalTourOpen(true); }}><HelpCircle size={13} /> Start the Live Lab tour</button>
           </div>
 
           <section id="overview" className="doc-section">
@@ -1118,13 +1146,13 @@ export default function Docs() {
 
           <section id="replay" className="doc-section"><div className="doc-section-tag">04 / LOGICAL TIME &amp; REPLAY</div><h2>Decoupling Telemetry from Deterministic Memory</h2><p>System clocks (<code>Instant</code>) are non-deterministic and vary across hardware. ONSOUR replaces wall-clock time with <strong>Logical Timestamps</strong> (<code>LogicalTimestamp &#123; epoch_number, tick_within_epoch &#125;</code>).</p><p>Every epoch produces an <strong>Authoritative Governance Snapshot</strong> recording the exact ε utilized. During replay, the system bypasses live telemetry and uses the recorded epsilon, ensuring exact trajectory reproducibility.</p></section>
 
-          <section id="api" className="doc-section"><div className="doc-section-tag">05 / CORE API &amp; RUST SPECS</div><h2>Module Reference &amp; Public Exports</h2><div className="code-snippet-box"><div className="code-box-top"><span>backend/core/src/lib.rs</span><button onClick={() => copyToClipboard(`pub use state::{Node, NodePractical, Edge};\npub use graph::{step_sparse_impl as step_sparse, step_sparse_buffered, step_sparse_js};\npub use math::{alpha, step_node, step_node_math};\npub use governance::{ThermodynamicGovernor, SystemMetrics, LogicalTimestamp, GovernanceSnapshot};`, "lib-code")}>{copiedCode === "lib-code" ? <Check size={14} /> : <Copy size={14} />}{copiedCode === "lib-code" ? "Copied" : "Copy snippet"}</button></div><pre><code>{`pub use state::{Node, NodePractical, Edge};\npub use graph::{step_sparse_impl as step_sparse, step_sparse_buffered, step_sparse_js};\npub use math::{alpha, step_node, step_node_math};\npub use governance::{ThermodynamicGovernor, SystemMetrics, LogicalTimestamp, GovernanceSnapshot};`}</code></pre></div><div className="docs-cta-card"><div><h3>Ready to inspect the codebase?</h3><p>Clone the unified monorepo or run test suites locally via Cargo.</p></div><a href="https://github.com/hadiranweb/onsour-unified" target="_blank" rel="noreferrer" className="button button-primary">View GitHub Repository</a></div></section>
+          <section id="api" className="doc-section"><div className="doc-section-tag">05 / CORE API &amp; RUST SPECS</div><h2>Module Reference &amp; Public Exports</h2><div className="code-snippet-box"><div className="code-box-top"><span>backend/core/src/lib.rs</span><button onClick={() => copyToClipboard(`pub use state::{Node, NodePractical, Edge};\npub use graph::{step_sparse_impl as step_sparse, step_sparse_buffered, step_sparse_js};\npub use math::{alpha, step_node, step_node_math};\npub use governance::{ThermodynamicGovernor, SystemMetrics, LogicalTimestamp, GovernanceSnapshot};`, "lib-code")}>{copiedCode === "lib-code" ? <Check size={14} /> : <Copy size={14} />}{copiedCode === "lib-code" ? "Copied" : "Copy snippet"}</button></div><pre><code>{`pub use state::{Node, NodePractical, Edge};\npub use graph::{step_sparse_impl as step_sparse, step_sparse_buffered, step_sparse_js};\npub use math::{alpha, step_node, step_node_math};\npub use governance::{ThermodynamicGovernor, SystemMetrics, LogicalTimestamp, GovernanceSnapshot};`}</code></pre></div><div className="docs-cta-card"><div><h3>Ready to inspect the codebase?</h3><p>Clone the unified monorepo or run test suites locally via Cargo.</p></div><a href="https://github.com/hadiranweb/UIPT" target="_blank" rel="noreferrer" className="button button-primary">View GitHub Repository</a></div></section>
 
-          <section id="lab" className="doc-section doc-section-lab"><div className="doc-section-tag">06 / LIVE DISPERSION LAB</div><h2>Upload a graph. Inspect the barrier.</h2><p>Use this browser-only instrument to test the governance rule against your own state transition. The input is validated locally, reduced to node activation values, and never transmitted to a server.</p><LiveDispersionLab copiedCode={copiedCode} copyToClipboard={copyToClipboard} /></section>
-        </article>
-      </div>
+          <section id="lab" className="doc-section doc-section-lab"><div className="doc-section-tag">06 / LIVE DISPERSION LAB</div><h2>Upload a graph. Inspect the barrier.</h2><p>Use this browser-only instrument to test the governance rule against your own state transition. The input is validated locally, reduced to node activation values, and never transmitted to a server.</p><LiveDispersionLab copiedCode={copiedCode} copyToClipboard={copyToClipboard} isOpenManually={globalTourOpen} onCloseManual={() => setGlobalTourOpen(false)} /></section>
+          </article>
+      </main>
 
-      <footer className="site-footer"><div className="container footer-row"><div className="footer-brand"><span className="brand-orbit-mark" aria-hidden="true"><span /></span><span>ONSOUR</span></div><span className="footer-note">Technical Manual &amp; Specification v3.4</span><span className="footer-meta">© 2026 / UIPT RESEARCH GROUP</span></div></footer>
+      <GlobalFooter />
     </div>
   );
 }

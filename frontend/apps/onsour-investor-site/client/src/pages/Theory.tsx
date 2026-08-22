@@ -1,30 +1,30 @@
 /* Dedicated UIPT Theory Foundation page, inspired by the Dream Site repository. Establishes the thermodynamic physics, spontaneous symmetry breaking, and three phases of intelligence as the bedrock of ONSOUR. */
+import { useEffect } from "react";
 import { Link } from "wouter";
 import { ArrowLeft, Brain, Cpu, Flame, Gauge, Layers, Orbit, ShieldCheck, Sparkles, Workflow, Zap } from "lucide-react";
+import { GlobalNavigation } from "@/components/GlobalNavigation";
+import { GlobalFooter } from "@/components/GlobalFooter";
+import { Breadcrumbs } from "@/components/Breadcrumbs";
+import { scrollToCurrentHash } from "@/lib/hashNavigation";
 import InteractivePotentialExplorer from "@/components/theory/InteractivePotentialExplorer";
 import PhaseTransitionMap from "@/components/theory/PhaseTransitionMap";
 import TanhResponseExplorer from "@/components/theory/TanhResponseExplorer";
 import LangevinPathPreview from "@/components/theory/LangevinPathPreview";
 
 export default function Theory() {
+  useEffect(() => {
+    scrollToCurrentHash("auto");
+  }, []);
+
   return (
     <div className="site-shell theory-shell">
-      <header className="site-nav">
-        <Link href="/" className="brand-lockup">
-          <span className="brand-orbit-mark" aria-hidden="true"><span /></span>
-          <span>ONSOUR</span>
-        </Link>
-        <nav className="nav-links" aria-label="Theory Navigation">
-          <Link href="/docs">Technical Specs</Link>
-          <Link href="/">Investor Presentation</Link>
-        </nav>
-        <Link href="/" className="nav-cta"><ArrowLeft size={15} /> Return to Briefing</Link>
-      </header>
+      <GlobalNavigation />
 
-      <main className="theory-main">
+      <main id="main-content" className="theory-main">
         {/* Hero Section */}
         <section className="theory-hero">
           <div className="container theory-hero-content">
+            <Breadcrumbs items={[{ label: "Theory Foundation" }]} />
             <div className="eyebrow"><span className="eyebrow-pulse" /> FOUNDATIONAL MANIFESTO / UIPT-A</div>
             <h1>Intelligence is not software. <em>It is a phase transition.</em></h1>
             <p className="theory-lede">
@@ -39,7 +39,7 @@ export default function Theory() {
         </section>
 
         {/* Core Discovery */}
-        <section className="section theory-section">
+        <section id="core-discovery" className="section theory-section">
           <div className="container">
             <div className="theory-section-kicker"><span className="kicker-dot" /> § 01 / CORE DISCOVERY</div>
             <h2>Spontaneous Symmetry Breaking in Intelligence</h2>
@@ -55,7 +55,7 @@ export default function Theory() {
         </section>
 
         {/* Three Phases */}
-        <section className="section theory-section alt-bg">
+        <section id="three-phases" className="section theory-section alt-bg">
           <div className="container">
             <div className="theory-section-kicker"><span className="kicker-dot" /> § 02 / THE THREE PHASES</div>
             <h2>The Three Phases of Cognitive Capability</h2>
@@ -83,7 +83,7 @@ export default function Theory() {
         </section>
 
         {/* Interactive Observatory */}
-        <section className="section theory-section alt-bg theory-observatory-section">
+        <section id="observatory" className="section theory-section alt-bg theory-observatory-section">
           <div className="container">
             <div className="theory-section-kicker"><span className="kicker-dot" /> § 03 / INTERACTIVE UIPT OBSERVATORY</div>
             <h2>See the equations become a landscape.</h2>
@@ -99,7 +99,7 @@ export default function Theory() {
         </section>
 
         {/* Mathematical Framework */}
-        <section className="section theory-section">
+        <section id="mathematical-framework" className="section theory-section">
           <div className="container">
             <div className="theory-section-kicker"><span className="kicker-dot" /> § 03 / MATHEMATICAL FRAMEWORK</div>
             <h2>Formal Definitions & Governing Equations</h2>
@@ -144,7 +144,7 @@ export default function Theory() {
         </section>
 
         {/* Connection to ONSOUR Execution */}
-        <section className="section theory-section alt-bg">
+        <section id="theory-to-runtime" className="section theory-section alt-bg">
           <div className="container bridge-container">
             <div className="theory-section-kicker"><span className="kicker-dot" /> § 04 / FROM THEORY TO RUST RUNTIME</div>
             <h2>How UIPT Becomes an Executable Organism</h2>
@@ -182,17 +182,7 @@ export default function Theory() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="container footer-grid">
-          <div className="footer-brand"><span className="brand-orbit-mark" aria-hidden="true"><span /></span>ONSOUR THEORY FOUNDATION</div>
-          <div className="footer-links">
-            <Link href="/theory">Theory Foundation</Link>
-            <Link href="/docs">Technical Specs</Link>
-            <Link href="/">Investor Deck</Link>
-          </div>
-          <div className="footer-meta"><span>UIPT v2.4</span><span>Universal Integrated Physical Theory</span></div>
-        </div>
-      </footer>
+      <GlobalFooter />
     </div>
   );
 }

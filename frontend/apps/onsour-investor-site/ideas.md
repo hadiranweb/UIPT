@@ -1,18 +1,18 @@
 # ONSOUR Investor Site — Design Direction
 
 ## Approach 1
-**Theme Name:** Living Infrastructure
-**Very Brief Intro:** A dark editorial systems aesthetic that treats the runtime as a living organism: precise typography, scientific diagrams, and soft energy fields replace noisy cyberpunk tropes. The result should feel credible to investors and legible to engineers.
+**Theme Name:** Living Infrastructure  
+**Very Brief Intro:** A dark editorial systems aesthetic that treats the runtime as a living organism: precise typography, scientific diagrams, and soft energy fields replace noisy cyberpunk tropes. The result should feel credible to investors and legible to engineers.  
 **Probability:** 0.06
 
 ## Approach 2
-**Theme Name:** Civic Instrument
-**Very Brief Intro:** A light, institutional interface inspired by observatories and public research labs, using paper-like surfaces, measured typography, and annotated diagrams. It would make ONSOUR feel open, trusted, and policy-ready.
+**Theme Name:** Civic Instrument  
+**Very Brief Intro:** A light, institutional interface inspired by observatories and public research labs, using paper-like surfaces, measured typography, and annotated diagrams. It would make ONSOUR feel open, trusted, and policy-ready.  
 **Probability:** 0.03
 
 ## Approach 3
-**Theme Name:** Quiet Machine
-**Very Brief Intro:** A monochrome, gallery-like product narrative with restrained color, large editorial headlines, and sparse interaction. It would position ONSOUR as an elegant infrastructure layer rather than a conventional software product.
+**Theme Name:** Quiet Machine  
+**Very Brief Intro:** A monochrome, gallery-like product narrative with restrained color, large editorial headlines, and sparse interaction. It would position ONSOUR as an elegant infrastructure layer rather than a conventional software product.  
 **Probability:** 0.08
 
 ## Chosen Direction: Living Infrastructure
@@ -47,7 +47,7 @@ Use low-amplitude orbital drift, line-draw reveals, and opacity/transform-only e
 Use **Space Grotesk** for headlines and large numerals, with **IBM Plex Mono** for labels, formula annotations, and implementation notes. Headlines should be compact, slightly tight, and mostly sentence case. Labels use uppercase with generous letter spacing. Body copy stays at a calm 17–19px with an 1.6 line-height.
 
 ### Brand Essence
-ONSOUR is a self-regulating runtime for resilient autonomous systems, built for teams that need adaptive stability without surrendering auditability.
+ONSOUR is a self-regulating runtime for resilient autonomous systems, built for teams that need adaptive stability without surrendering auditability.  
 **Personality:** lucid, resilient, exacting.
 
 ### Brand Voice

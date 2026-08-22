@@ -1,7 +1,7 @@
 # ONSOUR Graph Analysis Contract v1
 
-**Status:** Draft for foundation review
-**Schema version:** `onsour.graph-analysis.v1`
+**Status:** Draft for foundation review  
+**Schema version:** `onsour.graph-analysis.v1`  
 **Scope:** Browser preview, future WASM execution, persistence and export
 
 ## Design rule
